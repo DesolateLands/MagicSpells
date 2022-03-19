@@ -51,6 +51,8 @@ ext {
 
 dependencies {
   compile group: 'org.apache.commons', name: 'commons-math3', version: '3.0'
+  compile 'me.clip:placeholderapi:2.8.2'
+  compile 'com.bekvon.bukkit.residence:Residence:4.5.3.0'
   spigot magicspellsClasspathSpigot()
   mscore magicspellsClasspathBase()
   factions magicspellsClasspathFactions()
@@ -105,9 +107,9 @@ public class MSConfig {
   def datestampString = "${-> new Date().format(datestampPattern)}"
 
   // Resource retrieving
-  def resourceResidenceUrl = 'http://nexus.hc.to/content/repositories/pub_releases/com/bekvon/bukkit/residence/Residence/4.5.3.0/Residence-4.5.3.0.jar'
+ // def resourceResidenceUrl = 'http://nexus.hc.to/content/repositories/pub_releases/com/bekvon/bukkit/residence/Residence/4.5.3.0/Residence-4.5.3.0.jar'
   def resourceNcpUrl = 'https://ci.md-5.net/job/NoCheatPlus/lastSuccessfulBuild/artifact/target/NoCheatPlus.jar'
-  def resourcePlaceholderapiUrl = 'http://repo.extendedclip.com/content/repositories/placeholderapi/me/clip/placeholderapi/2.8.2/placeholderapi-2.8.2.jar'
+  //def resourcePlaceholderapiUrl = 'http://repo.extendedclip.com/content/repositories/placeholderapi/me/clip/placeholderapi/2.8.2/placeholderapi-2.8.2.jar'
   def resourceGriefPreventionUrl = 'https://github.com/TechFortress/GriefPrevention/releases/download/16.8/GriefPrevention.jar'
 
   def versionSuffix
@@ -136,13 +138,13 @@ def magicspellsGetResources() {
   File libFolder = project.file(project.ext.magicspellsData.libDir)
 
   // Get Residence
-  downloadFile(new File(libFolder, 'Residence.jar'), new URL(project.ext.magicspellsData.resourceResidenceUrl))
+  //downloadFile(new File(libFolder, 'Residence.jar'), new URL(project.ext.magicspellsData.resourceResidenceUrl))
 
   // Get NoCheatPlus
   downloadFile(new File(libFolder, 'NoCheatPlus.jar'), new URL(project.ext.magicspellsData.resourceNcpUrl))
 
   // Get PlaceholderAPI
-  downloadFile(new File(libFolder, 'PlaceholderAPI.jar'), new URL(project.ext.magicspellsData.resourcePlaceholderapiUrl))
+  //downloadFile(new File(libFolder, 'PlaceholderAPI.jar'), new URL(project.ext.magicspellsData.resourcePlaceholderapiUrl))
 
   // Get GriefPrevention
   downloadFile(new File(libFolder, 'GriefPrevention.jar'), new URL(project.ext.magicspellsData.resourceGriefPreventionUrl))
@@ -318,6 +320,12 @@ task magicspellsCoreJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.S
   dependencies {
     repositories {
       mavenCentral()
+      maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+      }
+      maven {
+        url = 'http://nexus.hc.to/content/repositories/pub_releases/'
+      }
     }
     dependency('org.apache.commons:commons-math3')
   }
