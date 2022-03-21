@@ -181,6 +181,12 @@ public class MagicConfig {
 							for (String modifierKey : spellConfig.getConfigurationSection("modifiers").getKeys(false)) {
 								sec.set(modifierKey, spellConfig.get("modifiers." + modifierKey));
 							}
+						} else if (key.equals("effect-collections")) {
+							ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.effect-collections");
+							if (sec == null) sec = this.mainConfig.createSection("general.effect-collections");
+							for (String effectKey : spellConfig.getConfigurationSection("effect-collections").getKeys(false)) {
+								sec.set(effectKey, spellConfig.get("effect-collections." + effectKey));
+							}
 						} else {
 							this.mainConfig.set("spells." + key, spellConfig.get(key));
 						}

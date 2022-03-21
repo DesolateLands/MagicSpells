@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.nisovin.magicspells.spelleffects.collections.EffectCollection;
 import com.nisovin.magicspells.util.LocationUtil;
 import com.nisovin.magicspells.util.TimeUtil;
 import com.nisovin.magicspells.util.TxtUtil;
@@ -526,6 +527,8 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	
 	protected EnumMap<EffectPosition, List<SpellEffect>> effects;
 	protected Map<String, Map<EffectPosition, List<Runnable>>> callbacks;
+
+	protected List<EffectCollection> effectCollections;
 	
 	protected int minRange;
 	
@@ -826,7 +829,21 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 				}
 			}
 		}
-		
+
+		// Effect collections
+		String collectionPath = section + '.' + spellName + ".effect-collections";
+		this.effectCollections = new ArrayList<>();
+
+		if (config.isList(collectionPath)) {
+			for (String collectionString : config.getStringList(collectionPath, new ArrayList<>())) {
+				EffectCollection collection = MagicSpells
+						.getEffectCollectionManager().getCollection(collectionString);
+
+				if (collection != null) {
+					this.effectCollections.add(collection);
+				}
+			}
+		}
 		//TODO load the fast mapping for effects here
 		
 		// Cost
@@ -1939,61 +1956,78 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	}
 	
 	protected void playSpellEffects(EffectPosition pos, Entity entity) {
-		if (this.effects != null) {
-			List<SpellEffect> effectsList = this.effects.get(pos);
-			if (effectsList != null) {
-				for (SpellEffect effect : effectsList) {
-					Runnable canceler = effect.playEffect(entity);
-					if (canceler == null) continue;
-					if (!(entity instanceof Player)) continue;
-					Player p = (Player)entity;
-					Map<EffectPosition, List<Runnable>> runnablesMap = this.callbacks.get(p.getUniqueId().toString());
-					if (runnablesMap == null) continue;
-					List<Runnable> runnables = runnablesMap.get(pos);
-					if (runnables == null) continue;
-					runnables.add(canceler);
-				}
+		if (this.effects != null || !this.effectCollections.isEmpty()) {
+			List<SpellEffect> effectsList = new ArrayList<>();
+			if (this.effects != null && this.effects.get(pos) != null) {
+				effectsList.addAll(this.effects.get(pos));
+			}
+			this.effectCollections
+					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+			for (SpellEffect effect : effectsList) {
+				Runnable canceler = effect.playEffect(entity);
+				if (canceler == null) continue;
+				if (!(entity instanceof Player)) continue;
+				Player p = (Player)entity;
+				Map<EffectPosition, List<Runnable>> runnablesMap = this.callbacks.get(p.getUniqueId().toString());
+				if (runnablesMap == null) continue;
+				List<Runnable> runnables = runnablesMap.get(pos);
+				if (runnables == null) continue;
+				runnables.add(canceler);
 			}
 		}
 	}
 	
 	protected void playSpellEffects(EffectPosition pos, Location location) {
-		if (this.effects != null) {
-			List<SpellEffect> effectsList = this.effects.get(pos);
-			if (effectsList != null) {
-				for (SpellEffect effect : effectsList) {
-					effect.playEffect(location);
-				}
+		if (this.effects != null || !this.effectCollections.isEmpty()) {
+			List<SpellEffect> effectsList = new ArrayList<>();
+			if (this.effects != null && this.effects.get(pos) != null) {
+				effectsList.addAll(this.effects.get(pos));
+			}
+			this.effectCollections
+					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+			for (SpellEffect effect : effectsList) {
+				effect.playEffect(location);
 			}
 		}
 	}
 	
 	protected void playSpellEffectsTrail(Location loc1, Location loc2) {
-		if (this.effects != null) {
+		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			if (!LocationUtil.isSameWorld(loc1, loc2)) return;
-			List<SpellEffect> effectsList = this.effects.get(EffectPosition.TRAIL);
-			if (effectsList != null) {
-				for (SpellEffect effect : effectsList) {
-					effect.playEffect(loc1, loc2);
-				}
+			EffectPosition trailPos = EffectPosition.TRAIL;
+			List<SpellEffect> effectsList = new ArrayList<>();
+			if (this.effects != null && this.effects.get(trailPos) != null) {
+				effectsList.addAll(this.effects.get(trailPos));
 			}
-			
-			List<SpellEffect> rTrailEffects = this.effects.get(EffectPosition.REVERSE_LINE);
-			if (rTrailEffects != null) {
-				for (SpellEffect effect: rTrailEffects) {
-					effect.playEffect(loc2, loc1);
-				}
+			this.effectCollections
+					.forEach(collection -> effectsList.addAll(collection.getEffects(trailPos)));
+			for (SpellEffect effect : effectsList) {
+				effect.playEffect(loc1, loc2);
+			}
+
+			EffectPosition linePos = EffectPosition.REVERSE_LINE;
+			List<SpellEffect> rTrailEffects = new ArrayList<>();
+			if (this.effects != null && this.effects.get(linePos) != null) {
+				rTrailEffects.addAll(this.effects.get(linePos));
+			}
+			this.effectCollections
+					.forEach(collection -> rTrailEffects.addAll(collection.getEffects(linePos)));
+			for (SpellEffect effect: rTrailEffects) {
+				effect.playEffect(loc2, loc1);
 			}
 		}
 	}
 	
 	public void playTrackingLinePatterns(EffectPosition pos, Location origin, Location target, Entity originEntity, Entity targetEntity) {
-		if (this.effects != null) {
-			List<SpellEffect> spellEffects = this.effects.get(pos);
-			if (spellEffects != null) {
-				for (SpellEffect e: spellEffects) {
-					e.playTrackingLinePatterns(origin, target, originEntity, targetEntity);
-				}
+		if (this.effects != null || !this.effectCollections.isEmpty()) {
+			List<SpellEffect> spellEffects = new ArrayList<>();
+			if (this.effects != null && this.effects.get(pos) != null) {
+				spellEffects.addAll(this.effects.get(pos));
+			}
+			this.effectCollections
+					.forEach(collection -> spellEffects.addAll(collection.getEffects(pos)));
+			for (SpellEffect e: spellEffects) {
+				e.playTrackingLinePatterns(origin, target, originEntity, targetEntity);
 			}
 		}
 	}
@@ -2043,14 +2077,18 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	protected void playSpellEffectsBuff(Entity entity, SpellEffect.SpellEffectActiveChecker checker) {
 		if (this.effects != null) {
 			List<SpellEffect> effectsList = this.effects.get(EffectPosition.BUFF);
+			this.effectCollections
+					.forEach(collection -> effectsList.addAll(collection.getEffects(EffectPosition.BUFF)));
 			if (effectsList != null) {
 				for (SpellEffect effect : effectsList) {
 					effect.playEffectWhileActiveOnEntity(entity, checker);
 				}
 			}
-			effectsList = this.effects.get(EffectPosition.ORBIT);
-			if (effectsList != null) {
-				for (SpellEffect effect : effectsList) {
+			List<SpellEffect> effectsOrbitList = this.effects.get(EffectPosition.ORBIT);
+			this.effectCollections
+					.forEach(collection -> effectsOrbitList.addAll(collection.getEffects(EffectPosition.ORBIT)));
+			if (effectsOrbitList != null) {
+				for (SpellEffect effect : effectsOrbitList) {
 					effect.playEffectWhileActiveOrbit(entity, checker);
 				}
 			}

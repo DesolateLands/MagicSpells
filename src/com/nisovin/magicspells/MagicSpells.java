@@ -80,6 +80,7 @@ import com.nisovin.magicspells.volatilecode.VolatileCodeEnabled_1_9_R2;
 import com.nisovin.magicspells.volatilecode.VolatileCodeHandle;
 import com.nisovin.magicspells.volatilecode.VolatileCodeProtocolLib;
 import com.nisovin.magicspells.zones.NoMagicZoneManager;
+import com.nisovin.magicspells.spelleffects.collections.EffectCollectionManager;
 
 import de.slikey.effectlib.EffectManager;
 
@@ -175,6 +176,7 @@ public class MagicSpells extends JavaPlugin {
 	MoneyHandler moneyHandler;
 	MagicXpHandler magicXpHandler;
 	VariableManager variableManager;
+	EffectCollectionManager effectCollectionManager;
 	MagicLogger magicLogger;
 	LifeLengthTracker lifeLengthTracker;
 	
@@ -446,7 +448,13 @@ public class MagicSpells extends JavaPlugin {
 		}
 		variableManager = new VariableManager(this, varSec);
 		log("..." + variableManager.count() + " variables loaded");
-		
+
+		// Load effect collections
+		log("Loading effect collections...");
+		ConfigurationSection effectSection = config.getSection("general.effect-collections");
+		effectCollectionManager = new EffectCollectionManager(effectSection);
+		log("..." + effectCollectionManager.count() + " effect collections loaded");
+
 		// Load spells
 		log("Loading spells...");
 		loadSpells(config, pm, permGrantChildren, permLearnChildren, permCastChildren, permTeachChildren);
@@ -897,6 +905,8 @@ public class MagicSpells extends JavaPlugin {
 	public static VariableManager getVariableManager() {
 		return plugin.variableManager;
 	}
+
+	public static EffectCollectionManager getEffectCollectionManager() { return plugin.effectCollectionManager; }
 	
 	public static LifeLengthTracker getLifeLengthTracker() {
 		return plugin.lifeLengthTracker;
