@@ -1963,6 +1963,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 			}
 			this.effectCollections
 					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+
 			for (SpellEffect effect : effectsList) {
 				Runnable canceler = effect.playEffect(entity);
 				if (canceler == null) continue;
@@ -1985,6 +1986,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 			}
 			this.effectCollections
 					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+
 			for (SpellEffect effect : effectsList) {
 				effect.playEffect(location);
 			}
@@ -2001,6 +2003,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 			}
 			this.effectCollections
 					.forEach(collection -> effectsList.addAll(collection.getEffects(trailPos)));
+
 			for (SpellEffect effect : effectsList) {
 				effect.playEffect(loc1, loc2);
 			}
@@ -2012,6 +2015,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 			}
 			this.effectCollections
 					.forEach(collection -> rTrailEffects.addAll(collection.getEffects(linePos)));
+
 			for (SpellEffect effect: rTrailEffects) {
 				effect.playEffect(loc2, loc1);
 			}
@@ -2026,6 +2030,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 			}
 			this.effectCollections
 					.forEach(collection -> spellEffects.addAll(collection.getEffects(pos)));
+
 			for (SpellEffect e: spellEffects) {
 				e.playTrackingLinePatterns(origin, target, originEntity, targetEntity);
 			}
