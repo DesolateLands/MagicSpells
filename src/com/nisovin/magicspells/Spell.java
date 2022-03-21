@@ -2080,22 +2080,29 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	}
 	
 	protected void playSpellEffectsBuff(Entity entity, SpellEffect.SpellEffectActiveChecker checker) {
-		if (this.effects != null) {
-			List<SpellEffect> effectsList = this.effects.get(EffectPosition.BUFF);
-			this.effectCollections
-					.forEach(collection -> effectsList.addAll(collection.getEffects(EffectPosition.BUFF)));
-			if (effectsList != null) {
-				for (SpellEffect effect : effectsList) {
-					effect.playEffectWhileActiveOnEntity(entity, checker);
-				}
+		if (this.effects != null || !this.effectCollections.isEmpty()) {
+			List<SpellEffect> effectsList = new ArrayList<>();
+			EffectPosition buffPos = EffectPosition.BUFF;
+			if (this.effects != null && this.effects.get(buffPos) != null) {
+				effectsList.addAll(this.effects.get(buffPos));
 			}
-			List<SpellEffect> effectsOrbitList = this.effects.get(EffectPosition.ORBIT);
 			this.effectCollections
-					.forEach(collection -> effectsOrbitList.addAll(collection.getEffects(EffectPosition.ORBIT)));
-			if (effectsOrbitList != null) {
-				for (SpellEffect effect : effectsOrbitList) {
-					effect.playEffectWhileActiveOrbit(entity, checker);
-				}
+					.forEach(collection -> effectsList.addAll(collection.getEffects(buffPos)));
+
+			for (SpellEffect effect : effectsList) {
+				effect.playEffectWhileActiveOnEntity(entity, checker);
+			}
+
+			List<SpellEffect> effectsOrbitList = new ArrayList<>();
+			EffectPosition orbitPos = EffectPosition.ORBIT;
+			if (this.effects != null && this.effects.get(orbitPos) != null) {
+				effectsOrbitList.addAll(this.effects.get(orbitPos));
+			}
+			this.effectCollections
+					.forEach(collection -> effectsOrbitList.addAll(collection.getEffects(orbitPos)));
+
+			for (SpellEffect effect : effectsOrbitList) {
+				effect.playEffectWhileActiveOrbit(entity, checker);
 			}
 		}
 	}
