@@ -97,8 +97,8 @@ public class GateSpell extends InstantSpell {
 			Location to = b.getLocation();
 			boolean teleported = player.teleport(location);
 			if (teleported) {
-				playSpellEffects(EffectPosition.CASTER, from);
-				playSpellEffects(EffectPosition.TARGET, to);
+				playSpellEffects(EffectPosition.CASTER, from, player);
+				playSpellEffects(EffectPosition.TARGET, to, player);
 			} else {
 				// Fail - teleport blocked
 				MagicSpells.error(this.name + ": teleport prevented!");

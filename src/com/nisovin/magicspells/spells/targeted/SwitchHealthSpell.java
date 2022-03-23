@@ -41,7 +41,7 @@ public class SwitchHealthSpell extends TargetedSpell implements TargetedEntitySp
 		if (requireLesserHealthPercent && casterPct > targetPct) return false;
 		caster.setHealth(targetPct * caster.getMaxHealth());
 		target.setHealth(casterPct * target.getMaxHealth());
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 

@@ -391,6 +391,14 @@ public class Spellbook {
 		if (i != null && i != -1) return itemSpells.get(castItem).get(i);
 		return null;
 	}
+
+	public List<Spell> getAllCustomBindings(ItemStack item) {
+		CastItem castItem = new CastItem(item);
+		if (itemSpells.containsKey(castItem)) {
+			return itemSpells.get(castItem);
+		}
+		return new ArrayList<>();
+	}
 	
 	public boolean hasSpell(Spell spell) {
 		return hasSpell(spell, true);

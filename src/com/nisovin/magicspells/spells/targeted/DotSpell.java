@@ -62,9 +62,9 @@ public class DotSpell extends TargetedSpell implements TargetedEntitySpell, Spel
 			activeDots.put(target.getEntityId(), dot);
 		}
 		if (caster != null) {
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, caster);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class DotSpell extends TargetedSpell implements TargetedEntitySpell, Spel
 				target.damage(dam, caster);
 			}
 			target.setNoDamageTicks(0);
-			playSpellEffects(EffectPosition.DELAYED, target);
+			playSpellEffects(EffectPosition.DELAYED, target, caster);
 		}
 		
 		public void cancel() {

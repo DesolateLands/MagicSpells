@@ -168,7 +168,7 @@ public class OrbitSpell extends TargetedSpell implements TargetedEntitySpell {
 			TargetInfo<LivingEntity> target = getTargetedEntity(player, power);
 			if (target == null) return noTarget(player);
 			new ParticleTracker(player, target.getTarget(), target.getPower());
-			playSpellEffects(player, target.getTarget());
+			playSpellEffects(player, target.getTarget(), player);
 			sendMessages(player, target.getTarget());
 			return PostCastAction.NO_MESSAGES;
 		}
@@ -178,7 +178,7 @@ public class OrbitSpell extends TargetedSpell implements TargetedEntitySpell {
 	@Override
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
 		new ParticleTracker(caster, target, power);
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 
@@ -249,7 +249,7 @@ public class OrbitSpell extends TargetedSpell implements TargetedEntitySpell {
 			// Show particle
 			//MagicSpells.getVolatileCodeHandler().playParticleEffect(loc, particleName, particleHorizontalSpread, particleVerticalSpread, particleSpeed, particleCount, renderDistance, 0F);
 
-			playSpellEffects(EffectPosition.SPECIAL, loc);
+			playSpellEffects(EffectPosition.SPECIAL, loc, caster);
 			effect.display(data, loc, particleColor, renderDistance, particleHorizontalSpread, particleVerticalSpread, particleHorizontalSpread, particleSpeed, particleCount);
 
 			// Cast the spell at the location if it isn't null
@@ -271,7 +271,7 @@ public class OrbitSpell extends TargetedSpell implements TargetedEntitySpell {
 
 				immune.add(event.getTarget());
 				if (entitySpell != null) entitySpell.castAtEntity(event.getCaster(), event.getTarget(), event.getPower());
-				playSpellEffects(EffectPosition.TARGET, event.getTarget());
+				playSpellEffects(EffectPosition.TARGET, event.getTarget(), caster);
 				if (stopOnHitEntity) {
 					stop();
 					return;
@@ -292,7 +292,7 @@ public class OrbitSpell extends TargetedSpell implements TargetedEntitySpell {
 
 
 		public void stop() {
-			if (target.isValid()) playSpellEffects(EffectPosition.DELAYED, getLocation());
+			if (target.isValid()) playSpellEffects(EffectPosition.DELAYED, getLocation(), caster);
 			MagicSpells.cancelTask(taskId);
 			MagicSpells.cancelTask(repeatingHorizTaskId);
 			MagicSpells.cancelTask(repeatingVertTaskId);

@@ -47,7 +47,7 @@ public class PrayerSpell extends InstantSpell {
 						health = 0;
 					}
 					player.setHealth(health);
-					playSpellEffects(EffectPosition.CASTER, player);
+					playSpellEffects(EffectPosition.CASTER, player, player);
 				}
 			}
 		}

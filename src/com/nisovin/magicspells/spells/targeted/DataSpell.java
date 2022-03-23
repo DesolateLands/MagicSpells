@@ -46,7 +46,7 @@ public class DataSpell extends TargetedSpell {
 			String value = dataElement.apply(target);
 			MagicSpells.getVariableManager().set(variableName, player, value);
 			
-			playSpellEffects(player, target);
+			playSpellEffects(player, target, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

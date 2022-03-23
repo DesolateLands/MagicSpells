@@ -114,7 +114,7 @@ public class CarpetSpell extends TargetedSpell implements TargetedLocationSpell 
 					block.setBlock(b, false);
 					blocks.add(b);
 					if (blockMap != null) blockMap.put(b, player);
-					playSpellEffects(EffectPosition.TARGET, b.getLocation().add(0.5, 0, 0.5));
+					playSpellEffects(EffectPosition.TARGET, b.getLocation().add(0.5, 0, 0.5), player);
 				}
 			}
 		}
@@ -132,7 +132,7 @@ public class CarpetSpell extends TargetedSpell implements TargetedLocationSpell 
 				
 			}, duration);
 		}
-		if (player != null) playSpellEffects(EffectPosition.CASTER, player);
+		if (player != null) playSpellEffects(EffectPosition.CASTER, player, player);
 	}
 
 	@Override

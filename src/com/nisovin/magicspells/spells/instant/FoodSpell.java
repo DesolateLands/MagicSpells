@@ -34,7 +34,7 @@ public class FoodSpell extends InstantSpell {
 			if (this.maxSaturation > 0 && this.saturation > this.maxSaturation) this.saturation = this.maxSaturation;
 			player.setSaturation(s);
 			
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

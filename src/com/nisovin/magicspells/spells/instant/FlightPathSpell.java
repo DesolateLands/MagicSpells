@@ -161,7 +161,7 @@ public class FlightPathSpell extends InstantSpell {
 		
 		void start() {
 			this.player.setAllowFlight(true);
-			this.spell.playSpellEffects(EffectPosition.CASTER, this.player);
+			this.spell.playSpellEffects(EffectPosition.CASTER, this.player, this.player);
 			if (this.mountType == null) {
 				this.entityToPush = this.player;
 			} else {
@@ -222,7 +222,7 @@ public class FlightPathSpell extends InstantSpell {
 				}
 			}
 			
-			this.spell.playSpellEffects(EffectPosition.SPECIAL, this.player);
+			this.spell.playSpellEffects(EffectPosition.SPECIAL, this.player, this.player);
 		}
 		
 		void cancel() {
@@ -234,7 +234,7 @@ public class FlightPathSpell extends InstantSpell {
 					this.mountActive.eject();
 					this.mountActive.remove();
 				}
-				this.spell.playSpellEffects(EffectPosition.DELAYED, this.player);
+				this.spell.playSpellEffects(EffectPosition.DELAYED, this.player, this.player);
 				
 				this.player = null;
 				this.mountActive = null;

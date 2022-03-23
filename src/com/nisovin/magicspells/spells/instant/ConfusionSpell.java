@@ -36,9 +36,9 @@ public class ConfusionSpell extends InstantSpell {
 				int next = i + 1;
 				if (next >= monsters.size()) next = 0;
 				MagicSpells.getVolatileCodeHandler().setTarget(monsters.get(i), monsters.get(next));
-				playSpellEffects(EffectPosition.TARGET, monsters.get(i));
+				playSpellEffects(EffectPosition.TARGET, monsters.get(i), player);
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

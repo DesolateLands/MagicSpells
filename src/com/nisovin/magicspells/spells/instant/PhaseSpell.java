@@ -104,8 +104,8 @@ public class PhaseSpell extends InstantSpell {
 			location.setZ(location.getZ() + .5);
 			location.setPitch(player.getLocation().getPitch());
 			location.setYaw(player.getLocation().getYaw());
-			playSpellEffects(EffectPosition.CASTER, player.getLocation());
-			playSpellEffects(EffectPosition.TARGET, location);
+			playSpellEffects(EffectPosition.CASTER, player.getLocation(), player);
+			playSpellEffects(EffectPosition.TARGET, location, player);
 			player.teleport(location);
 		}
 		return PostCastAction.HANDLE_NORMALLY;

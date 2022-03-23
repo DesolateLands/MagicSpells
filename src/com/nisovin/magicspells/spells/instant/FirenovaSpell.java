@@ -89,7 +89,7 @@ public class FirenovaSpell extends InstantSpell implements TargetedLocationSpell
 		if (state == SpellCastState.NORMAL) {
 			if (this.fireImmunity != null) fireImmunity.add(player);
 			new FirenovaAnimation(player);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -180,13 +180,13 @@ public class FirenovaSpell extends InstantSpell implements TargetedLocationSpell
 								b = under;
 							}
 							mat.setBlock(b, false);
-							playSpellEffects(EffectPosition.SPECIAL, b.getLocation());
+							playSpellEffects(EffectPosition.SPECIAL, b.getLocation(), this.player);
 							if (subSpell != null) subSpell.castAtLocation(this.player, b.getLocation(), 1);
 							this.fireBlocks.add(b);
 						} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || (burnTallGrass && b.getRelative(BlockFace.UP).getType() == Material.LONG_GRASS)) {
 							b = b.getRelative(BlockFace.UP);
 							mat.setBlock(b, false);
-							playSpellEffects(EffectPosition.SPECIAL, b.getLocation());
+							playSpellEffects(EffectPosition.SPECIAL, b.getLocation(), this.player);
 							if (subSpell != null) subSpell.castAtLocation(this.player, b.getLocation(), 1);
 							this.fireBlocks.add(b);
 						}

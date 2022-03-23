@@ -73,11 +73,11 @@ public class StunSpell extends TargetedSpell implements TargetedEntitySpell {
 			registerEvents(listener);
 		}
 		if (caster != null) {
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, caster);
 		}
-		playSpellEffectsBuff(target, (Entity entity) -> stunnedPlayersUntil.containsKey(entity.getName()));
+		playSpellEffectsBuff(target, (Entity entity) -> stunnedPlayersUntil.containsKey(entity.getName()), caster);
 	}
 	
 	void stunEntity(Player caster, LivingEntity target, int duration) {
@@ -87,11 +87,11 @@ public class StunSpell extends TargetedSpell implements TargetedEntitySpell {
 			taskId = MagicSpells.scheduleRepeatingTask(new StunMonitor(), 5, 5);
 		}
 		if (caster != null) {
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, caster);
 		}
-		playSpellEffectsBuff(target, (Entity entity) -> stunnedEntitiesUntil.containsKey(entity));
+		playSpellEffectsBuff(target, (Entity entity) -> stunnedEntitiesUntil.containsKey(entity), caster);
 	}
 
 	@Override

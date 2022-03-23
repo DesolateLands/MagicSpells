@@ -39,7 +39,7 @@ public class GripSpell extends TargetedSpell implements TargetedEntitySpell, Tar
 
 			TargetInfo<LivingEntity> target = getTargetedEntity(player, power);
 			if (target == null) return noTarget(player);
-			if (!grip(player.getLocation(), target.getTarget())) return noTarget(player, strCantGrip);
+			if (!grip(player.getLocation(), target.getTarget(), player)) return noTarget(player, strCantGrip);
 			sendMessages(player, target.getTarget());
 			return PostCastAction.NO_MESSAGES;
 
@@ -50,7 +50,7 @@ public class GripSpell extends TargetedSpell implements TargetedEntitySpell, Tar
 	@Override
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
 		if (!validTargetList.canTarget(caster, target)) return false;
-		return grip(caster.getLocation(), target);
+		return grip(caster.getLocation(), target, caster);
 	}
 
 	@Override
@@ -60,16 +60,17 @@ public class GripSpell extends TargetedSpell implements TargetedEntitySpell, Tar
 
 	@Override
 	public boolean castAtEntityFromLocation(Player caster, Location from, LivingEntity target, float power) {
-		return castAtEntityFromLocation(from, target, power);
+		if (!validTargetList.canTarget(target)) return false;
+		return grip(from, target, caster);
 	}
 
 	@Override
 	public boolean castAtEntityFromLocation(Location from, LivingEntity target, float power) {
 		if (!validTargetList.canTarget(target)) return false;
-		return grip(from, target);
+		return grip(from, target, null);
 	}
 
-	private boolean grip(Location from, LivingEntity target) {
+	private boolean grip(Location from, LivingEntity target, Player caster) {
 		Location loc = from.clone();
 
 		Vector startDir = loc.clone().getDirection().normalize();
@@ -80,8 +81,8 @@ public class GripSpell extends TargetedSpell implements TargetedEntitySpell, Tar
 
 		if (!BlockUtils.isPathable(loc.getBlock())) return false;
 
-		playSpellEffects(EffectPosition.TARGET, target);
-		playSpellEffectsTrail(from, loc);
+		playSpellEffects(EffectPosition.TARGET, target, caster);
+		playSpellEffectsTrail(from, loc, caster);
 
 		return target.teleport(loc);
 	}

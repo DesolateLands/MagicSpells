@@ -87,7 +87,7 @@ public class LightningSpell extends TargetedSpell implements TargetedLocationSpe
 			}
 			if (target != null) {
 				lightning(target.getLocation());
-				playSpellEffects(player, target.getLocation());
+				playSpellEffects(player, target.getLocation(), player);
 				if (entityTarget != null) {
 					sendMessages(player, entityTarget);
 					return PostCastAction.NO_MESSAGES;
@@ -136,14 +136,14 @@ public class LightningSpell extends TargetedSpell implements TargetedLocationSpe
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
 		lightning(target);
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 
 	@Override
 	public boolean castAtLocation(Location target, float power) {
 		lightning(target);
-		playSpellEffects(EffectPosition.CASTER, target);
+		playSpellEffects(EffectPosition.CASTER, target, null);
 		return true;
 	}
 	

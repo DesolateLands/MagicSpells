@@ -37,8 +37,8 @@ public class EffectCollection {
         if (list != null) modifiers = new ModifierSet(list);
     }
 
-    public List<SpellEffect> getEffects(EffectPosition pos) {
-        if (effects.containsKey(pos)) {
+    public List<SpellEffect> getEffects(EffectPosition pos, Entity entity) {
+        if (effects.containsKey(pos) && checkModifiers(entity)) {
             return effects.get(pos);
         }
         return new ArrayList<>();

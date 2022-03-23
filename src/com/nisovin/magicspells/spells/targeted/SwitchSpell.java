@@ -29,7 +29,7 @@ public class SwitchSpell extends TargetedSpell implements TargetedEntitySpell {
 			if (target == null) return noTarget(player);
 			
 			// Teleport
-			playSpellEffects(player, target.getTarget());
+			playSpellEffects(player, target.getTarget(), player);
 			switchPlaces(player, target.getTarget());			
 			
 			// Send messages

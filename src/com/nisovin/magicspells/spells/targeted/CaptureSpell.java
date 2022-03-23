@@ -91,9 +91,9 @@ public class CaptureSpell extends TargetedSpell implements TargetedEntitySpell {
 				MagicSpells.getVolatileCodeHandler().setGravity(dropped, gravity);
 			}
 			if (caster != null) {
-				playSpellEffects(caster, target.getLocation());
+				playSpellEffects(caster, target.getLocation(), caster);
 			} else {
-				playSpellEffects(EffectPosition.TARGET, target.getLocation());
+				playSpellEffects(EffectPosition.TARGET, target.getLocation(), caster);
 			}
 			return true;
 		}

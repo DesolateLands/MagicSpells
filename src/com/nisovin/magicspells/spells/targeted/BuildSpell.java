@@ -95,9 +95,9 @@ public class BuildSpell extends TargetedSpell implements TargetedLocationSpell {
 			}
 		}
 		if (playBreakEffect) block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
-		playSpellEffects(EffectPosition.CASTER, player);
-		playSpellEffects(EffectPosition.TARGET, block.getLocation());
-		playSpellEffectsTrail(player.getLocation(), block.getLocation());
+		playSpellEffects(EffectPosition.CASTER, player, player);
+		playSpellEffects(EffectPosition.TARGET, block.getLocation(), player);
+		playSpellEffectsTrail(player.getLocation(), block.getLocation(), player);
 		if (consumeBlock) {
 			int amt = item.getAmount() - 1;
 			if (amt > 0) {

@@ -64,13 +64,13 @@ public class FreezeSpell extends InstantSpell implements SpellDamageSpell {
 			for (int i = 0; i < this.snowballs; i++) {
 				Snowball snowball = player.launchProjectile(Snowball.class);
 				MagicSpells.getVolatileCodeHandler().setGravity(snowball, this.snowballGravity);
-				playSpellEffects(EffectPosition.PROJECTILE, snowball);
-				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), snowball.getLocation(), player, snowball);
+				playSpellEffects(EffectPosition.PROJECTILE, snowball, player);
+				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), snowball.getLocation(), player, snowball, player);
 				snowball.setFallDistance(this.identifier); // Tag the snowballs
 				mod = new Vector((rand.nextDouble() - .5) * this.horizSpread, (rand.nextDouble() - .5) * this.vertSpread, (rand.nextDouble() - .5) * this.horizSpread);
 				snowball.setVelocity(snowball.getVelocity().add(mod));
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

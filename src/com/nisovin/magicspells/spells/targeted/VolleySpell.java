@@ -104,8 +104,8 @@ public class VolleySpell extends TargetedSpell implements TargetedLocationSpell,
 				if (fire > 0) a.setFireTicks(fire);
 				a.setMetadata(METADATA_KEY, new FixedMetadataValue(MagicSpells.plugin, "VolleySpell" + internalName));
 				if (removeDelay > 0) arrowList.add(a);
-				playSpellEffects(EffectPosition.PROJECTILE, a);
-				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, spawn, a.getLocation(), player, a);
+				playSpellEffects(EffectPosition.PROJECTILE, a, player);
+				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, spawn, a.getLocation(), player, a, player);
 			}
 			
 			if (removeDelay > 0) {
@@ -128,13 +128,13 @@ public class VolleySpell extends TargetedSpell implements TargetedLocationSpell,
 		
 		if (player != null) {
 			if (target != null) {
-				playSpellEffects(player, target);
+				playSpellEffects(player, target, player);
 			} else {
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			}
 		} else {
-			playSpellEffects(EffectPosition.CASTER, from);
-			if (target != null) playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.CASTER, from, player);
+			if (target != null) playSpellEffects(EffectPosition.TARGET, target, player);
 		}
 	}
 	
@@ -226,8 +226,8 @@ public class VolleySpell extends TargetedSpell implements TargetedLocationSpell,
 			if (count < arrowsShooter) {
 				Arrow a = spawn.getWorld().spawnArrow(spawn, dir, speedShooter, spread/10.0F);
 				MagicSpells.getVolatileCodeHandler().setGravity(a, arrowsHaveGravity);
-				playSpellEffects(EffectPosition.PROJECTILE, a);
-				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), a.getLocation(), player, a);
+				playSpellEffects(EffectPosition.PROJECTILE, a, player);
+				playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), a.getLocation(), player, a, player);
 				a.setVelocity(a.getVelocity());
 				if (player != null) a.setShooter(player);
 				if (fire > 0) a.setFireTicks(fire);

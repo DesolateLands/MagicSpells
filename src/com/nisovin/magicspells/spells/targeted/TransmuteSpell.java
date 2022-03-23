@@ -57,7 +57,7 @@ public class TransmuteSpell extends TargetedSpell implements TargetedLocationSpe
 			if (!canTransmute(block)) return noTarget(player);
 			
 			transmuteType.setBlock(block);
-			playSpellEffects(player, block.getLocation().add(0.5, 0.5, 0.5));
+			playSpellEffects(player, block.getLocation().add(0.5, 0.5, 0.5), player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -67,14 +67,14 @@ public class TransmuteSpell extends TargetedSpell implements TargetedLocationSpe
 		Block block = target.getBlock();
 		if (canTransmute(block)) {
 			transmuteType.setBlock(block);
-			playSpellEffects(caster, block.getLocation().add(0.5, 0.5, 0.5));
+			playSpellEffects(caster, block.getLocation().add(0.5, 0.5, 0.5), caster);
 			return true;
 		}
 		Vector v = target.getDirection();
 		block = target.clone().add(v).getBlock();
 		if (canTransmute(block)) {
 			transmuteType.setBlock(block);
-			playSpellEffects(caster, block.getLocation().add(0.5, 0.5, 0.5));
+			playSpellEffects(caster, block.getLocation().add(0.5, 0.5, 0.5), caster);
 			return true;
 		}
 		return false;
@@ -85,7 +85,7 @@ public class TransmuteSpell extends TargetedSpell implements TargetedLocationSpe
 		Block block = target.getBlock();
 		if (canTransmute(block)) {
 			transmuteType.setBlock(block);
-			playSpellEffects(EffectPosition.TARGET, block.getLocation().add(0.5, 0.5, 0.5));
+			playSpellEffects(EffectPosition.TARGET, block.getLocation().add(0.5, 0.5, 0.5), null);
 			return true;
 		}
 		return false;

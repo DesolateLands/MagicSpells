@@ -117,17 +117,17 @@ public class ConjureFireworkSpell extends InstantSpell implements TargetedLocati
 				dropped.setItemStack(item);
 				dropped.setPickupDelay(pickupDelay);
 				MagicSpells.getVolatileCodeHandler().setGravity(dropped, itemHasGravity);
-				playSpellEffects(EffectPosition.SPECIAL, dropped);
+				playSpellEffects(EffectPosition.SPECIAL, dropped, player);
 				//player.getWorld().dropItem(player.getLocation(), item).setItemStack(item);
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
 
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
-		playSpellEffects(EffectPosition.CASTER, caster);
+		playSpellEffects(EffectPosition.CASTER, caster, caster);
 		return castAtLocation(target, power);
 	}
 
@@ -138,7 +138,7 @@ public class ConjureFireworkSpell extends InstantSpell implements TargetedLocati
 		dropped.setItemStack(item);
 		dropped.setPickupDelay(pickupDelay);
 		MagicSpells.getVolatileCodeHandler().setGravity(dropped, itemHasGravity);
-		playSpellEffects(EffectPosition.SPECIAL, dropped);
+		playSpellEffects(EffectPosition.SPECIAL, dropped, null);
 		//target.getWorld().dropItem(target, item).setItemStack(item);
 		return true;
 	}

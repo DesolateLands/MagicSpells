@@ -54,7 +54,7 @@ public class OffsetLocationSpell extends TargetedSpell implements TargetedLocati
 			Location loc = Util.applyOffsets(baseTargetLocation, relativeOffset, absoluteOffset);
 			if (loc != null) {
 				spell.castAtLocation(player, loc, power);
-				playSpellEffects(player, loc);
+				playSpellEffects(player, loc, player);
 			} else {
 				return PostCastAction.ALREADY_HANDLED;
 			}

@@ -201,13 +201,14 @@ public class ExternalCommandSpell extends TargetedSpell implements TargetedEntit
 		
 		// Effects
 		if (sender instanceof Player) {
+			Player player = (Player) sender;
 			if (target != null) {
-				playSpellEffects((Player)sender, target);
+				playSpellEffects(player, target, player);
 			} else {
-				playSpellEffects(EffectPosition.CASTER, (Player)sender);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			}
 		} else if (sender instanceof BlockCommandSender) {
-			playSpellEffects(EffectPosition.CASTER, ((BlockCommandSender)sender).getBlock().getLocation());
+			playSpellEffects(EffectPosition.CASTER, ((BlockCommandSender)sender).getBlock().getLocation(), null);
 		}
 		// Add delayed command
 		if (this.commandToExecuteLater != null && !this.commandToExecuteLater.isEmpty() && !this.commandToExecuteLater.get(0).isEmpty()) {
@@ -353,9 +354,9 @@ public class ExternalCommandSpell extends TargetedSpell implements TargetedEntit
 			// Graphical effect
 			if (this.sender != null) {
 				if (this.sender instanceof Player) {
-					playSpellEffects(EffectPosition.DISABLED, (Player)this.sender);
+					playSpellEffects(EffectPosition.DISABLED, (Player)this.sender, (Player)this.sender);
 				} else if (this.sender instanceof BlockCommandSender) {
-					playSpellEffects(EffectPosition.DISABLED, ((BlockCommandSender)this.sender).getBlock().getLocation());
+					playSpellEffects(EffectPosition.DISABLED, ((BlockCommandSender)this.sender).getBlock().getLocation(), null);
 				}
 			}
 		}

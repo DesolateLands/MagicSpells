@@ -34,7 +34,7 @@ public class RoarSpell extends InstantSpell {
 				if (entity instanceof LivingEntity && !(entity instanceof Player) && this.validTargetList.canTarget(player, entity)) {
 					MagicSpells.getVolatileCodeHandler().setTarget((LivingEntity)entity, player);
 					count++;
-					playSpellEffects(EffectPosition.TARGET, entity);
+					playSpellEffects(EffectPosition.TARGET, entity, player);
 				}
 			}
 			
@@ -43,7 +43,7 @@ public class RoarSpell extends InstantSpell {
 				sendMessage(this.strNoTarget, player, args);
 				return PostCastAction.ALREADY_HANDLED;
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

@@ -112,9 +112,9 @@ public class ReplaceSpell extends TargetedSpell implements TargetedLocationSpell
 			}
 		}
 		if (caster != null) {
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, caster);
 		}
 		return replaced;
 	}

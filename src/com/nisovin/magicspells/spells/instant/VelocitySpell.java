@@ -26,7 +26,7 @@ public class VelocitySpell extends InstantSpell {
 			v = v.normalize();
 			v = v.multiply(speed * power);
 			player.setVelocity(v);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		
 		return PostCastAction.HANDLE_NORMALLY;

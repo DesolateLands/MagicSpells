@@ -309,9 +309,9 @@ public class SpawnMonsterSpell extends TargetedSpell implements TargetedLocation
 		
 		// Play effects
 		if (player != null) {
-			playSpellEffects(player, entity);
+			playSpellEffects(player, entity, player);
 		} else {
-			playSpellEffects(source, entity);
+			playSpellEffects(source, entity, player);
 		}
 		
 		// Schedule removal

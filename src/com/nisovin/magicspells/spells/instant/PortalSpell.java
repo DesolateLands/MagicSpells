@@ -118,7 +118,7 @@ public class PortalSpell extends InstantSpell {
 				}
 
 				new PortalLink(this, player, playerLoc, loc);
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			}
 		}
 		return PostCastAction.HANDLE_NORMALLY;
@@ -160,8 +160,8 @@ public class PortalSpell extends InstantSpell {
 					@Override
 					public void run() {
 						if (caster.isValid()) {
-							playSpellEffects(EffectPosition.SPECIAL, loc1);
-							playSpellEffects(EffectPosition.SPECIAL, loc2);
+							playSpellEffects(EffectPosition.SPECIAL, loc1, caster);
+							playSpellEffects(EffectPosition.SPECIAL, loc2, caster);
 						} else {
 							disable();
 						}
@@ -182,7 +182,7 @@ public class PortalSpell extends InstantSpell {
 						loc.setYaw(player.getLocation().getYaw());
 						loc.setPitch(player.getLocation().getPitch());
 						event.setTo(loc);
-						playSpellEffects(EffectPosition.TARGET, player);
+						playSpellEffects(EffectPosition.TARGET, player, this.caster);
 					}
 				} else if (PortalSpell.this.allowReturn && this.box2.contains(event.getTo())) {
 					if (checkTeleport(player)) {
@@ -190,7 +190,7 @@ public class PortalSpell extends InstantSpell {
 						loc.setYaw(player.getLocation().getYaw());
 						loc.setPitch(player.getLocation().getPitch());
 						event.setTo(loc);
-						playSpellEffects(EffectPosition.TARGET, player);
+						playSpellEffects(EffectPosition.TARGET, player, this.caster);
 					}
 				}
 			} else {
@@ -232,8 +232,8 @@ public class PortalSpell extends InstantSpell {
 		}
 
 		void disable() {
-			playSpellEffects(EffectPosition.DELAYED, this.loc1);
-			playSpellEffects(EffectPosition.DELAYED, this.loc2);
+			playSpellEffects(EffectPosition.DELAYED, this.loc1, this.caster);
+			playSpellEffects(EffectPosition.DELAYED, this.loc2, this.caster);
 			unregisterEvents(this);
 			if (this.taskId1 > 0) MagicSpells.cancelTask(this.taskId1);
 			if (this.taskId2 > 0) MagicSpells.cancelTask(this.taskId2);

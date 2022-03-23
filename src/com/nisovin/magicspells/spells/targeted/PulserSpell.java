@@ -138,9 +138,9 @@ public class PulserSpell extends TargetedSpell implements TargetedLocationSpell 
 		pulsers.put(block, new Pulser(caster, block, power));
 		ticker.start();
 		if (caster != null) {
-			playSpellEffects(caster, block.getLocation());
+			playSpellEffects(caster, block.getLocation(), caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, block.getLocation());
+			playSpellEffects(EffectPosition.TARGET, block.getLocation(), caster);
 		}
 	}
 
@@ -276,7 +276,7 @@ public class PulserSpell extends TargetedSpell implements TargetedLocationSpell 
 					activated = spell.castAtLocation(location, power) || activated;
 				}
 			}
-			playSpellEffects(EffectPosition.DELAYED, location);
+			playSpellEffects(EffectPosition.DELAYED, location, caster);
 			if (totalPulses > 0 && (activated || !onlyCountOnSuccess)) {
 				pulseCount += 1;
 				if (pulseCount >= totalPulses) {
@@ -290,7 +290,7 @@ public class PulserSpell extends TargetedSpell implements TargetedLocationSpell 
 		public void stop() {
 			if (!block.getChunk().isLoaded()) block.getChunk().load();
 			block.setType(Material.AIR);
-			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation());
+			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation(), caster);
 			if (spellOnBreak != null) {
 				if (caster == null) {
 					spellOnBreak.castAtLocation(location, power);

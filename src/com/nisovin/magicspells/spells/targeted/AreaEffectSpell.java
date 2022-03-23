@@ -179,11 +179,11 @@ public class AreaEffectSpell extends TargetedSpell implements TargetedLocationSp
 							}
 						}
 					}
-					playSpellEffects(EffectPosition.TARGET, target);
+					playSpellEffects(EffectPosition.TARGET, target, player);
 					if (spellSourceInCenter) {
-						playSpellEffectsTrail(location, target.getLocation());
+						playSpellEffectsTrail(location, target.getLocation(), player);
 					} else if (player != null) {
-						playSpellEffectsTrail(player.getLocation(), target.getLocation());
+						playSpellEffectsTrail(player.getLocation(), target.getLocation(), player);
 					}
 					count++;
 					if (maxTargets > 0 && count >= maxTargets) break;
@@ -192,8 +192,8 @@ public class AreaEffectSpell extends TargetedSpell implements TargetedLocationSp
 		}
 
 		if (count > 0 || !failIfNoTargets) {
-			if (player != null) playSpellEffects(EffectPosition.CASTER, player);
-			playSpellEffects(EffectPosition.SPECIAL, location);
+			if (player != null) playSpellEffects(EffectPosition.CASTER, player, player);
+			playSpellEffects(EffectPosition.SPECIAL, location, player);
 		}
 		
 		return count > 0;

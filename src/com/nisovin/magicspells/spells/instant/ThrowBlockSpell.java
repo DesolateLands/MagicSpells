@@ -121,7 +121,7 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 			Location l = player.getEyeLocation().add(v);
 			l.add(0, this.yOffset, 0);
 			spawnFallingBlock(player, power, l, v);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -141,8 +141,8 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 		if (this.material != null) {
 			FallingBlock block = this.material.spawnFallingBlock(location);
 			MagicSpells.getVolatileCodeHandler().setGravity(block, this.projectileHasGravity);
-			playSpellEffects(EffectPosition.PROJECTILE, block);
-			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), block.getLocation(), player, block);
+			playSpellEffects(EffectPosition.PROJECTILE, block, player);
+			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), block.getLocation(), player, block, player);
 			block.setVelocity(velocity);
 			block.setDropItem(this.dropItem);
 			if (this.fallDamage > 0) MagicSpells.getVolatileCodeHandler().setFallingBlockHurtEntities(block, this.fallDamage, this.fallDamageMax);
@@ -151,19 +151,19 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 		} else if (this.tntFuse > 0) {
 			TNTPrimed tnt = location.getWorld().spawn(location, TNTPrimed.class);
 			MagicSpells.getVolatileCodeHandler().setGravity(tnt, this.projectileHasGravity);
-			playSpellEffects(EffectPosition.PROJECTILE, tnt);
-			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), tnt.getLocation(), player, tnt);
+			playSpellEffects(EffectPosition.PROJECTILE, tnt, player);
+			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), tnt.getLocation(), player, tnt, player);
 			tnt.setFuseTicks(this.tntFuse);
 			tnt.setVelocity(velocity);
 			entity = tnt;
 		}
 		if (this.fallingBlocks != null) {
 			this.fallingBlocks.put(entity, info);
-			if (this.cleanTask < 0) startTask();
+			if (this.cleanTask < 0) startTask(player);
 		}
 	}
 	
-	void startTask() {
+	void startTask(Player player) {
 		cleanTask = Bukkit.getScheduler().scheduleSyncDelayedTask(MagicSpells.plugin, new Runnable() {
 			@Override
 			public void run() {
@@ -178,7 +178,7 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 								Block b = block.getLocation().getBlock();
 								if (material.equals(b) || (material.getMaterial() == Material.ANVIL && b.getType() == Material.ANVIL)) {
 									b.setType(Material.AIR);
-									playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation());
+									playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation(), player);
 								}
 							}
 						}
@@ -190,7 +190,7 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 				if (fallingBlocks.isEmpty()) {
 					cleanTask = -1;
 				} else {
-					startTask();
+					startTask(player);
 				}
 			}
 		}, 500);
@@ -360,7 +360,7 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 	public boolean castAtLocation(Player caster, Location target, float power) {
 		Vector v = getVector(target, power);
 		spawnFallingBlock(caster, power, target.clone().add(0, this.yOffset, 0), v);
-		playSpellEffects(EffectPosition.CASTER, target);
+		playSpellEffects(EffectPosition.CASTER, target, caster);
 		return true;
 	}
 
@@ -368,7 +368,7 @@ public class ThrowBlockSpell extends InstantSpell implements TargetedLocationSpe
 	public boolean castAtLocation(Location target, float power) {
 		Vector v = getVector(target, power);
 		spawnFallingBlock(null, power, target.clone().add(0, this.yOffset, 0), v);
-		playSpellEffects(EffectPosition.CASTER, target);
+		playSpellEffects(EffectPosition.CASTER, target, null);
 		return true;
 	}
 

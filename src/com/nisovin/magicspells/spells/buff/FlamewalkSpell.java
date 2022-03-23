@@ -89,7 +89,7 @@ public class FlamewalkSpell extends BuffSpell {
 					turnOff(player);
 					continue;
 				}
-				playSpellEffects(EffectPosition.DELAYED, player);
+				playSpellEffects(EffectPosition.DELAYED, player, player);
 				List<Entity> entities = player.getNearbyEntities(range, range, range);
 				for (Entity entity : entities) {
 					// TODO this should be checking if it isn't a living entity first
@@ -105,8 +105,8 @@ public class FlamewalkSpell extends BuffSpell {
 						continue;
 					}
 					entity.setFireTicks(Math.round(fireTicks * power));
-					playSpellEffects(EffectPosition.TARGET, entity);
-					playSpellEffectsTrail(player.getLocation(), entity.getLocation());
+					playSpellEffects(EffectPosition.TARGET, entity, player);
+					playSpellEffectsTrail(player.getLocation(), entity.getLocation(), player);
 					addUse(player);
 					chargeUseCost(player);
 				}

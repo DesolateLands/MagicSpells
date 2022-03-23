@@ -98,9 +98,9 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 		}
 		if (ok) {
 			if (caster != null) {
-				playSpellEffects(caster, target);
+				playSpellEffects(caster, target, caster);
 			} else {
-				playSpellEffects(EffectPosition.TARGET, target);
+				playSpellEffects(EffectPosition.TARGET, target, caster);
 			}
 		}
 		return ok;

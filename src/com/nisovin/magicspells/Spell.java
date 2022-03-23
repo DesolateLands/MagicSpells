@@ -1218,7 +1218,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		} else {
 			action = PostCastAction.DELAYED;
 			sendMessage(this.strCastStart, player, args);
-			playSpellEffects(EffectPosition.START_CAST, player);
+			playSpellEffects(EffectPosition.START_CAST, (Entity) player, player);
 			if (MagicSpells.plugin.useExpBarAsCastTimeBar) {
 				new DelayedSpellCastWithBar(spellCast);
 			} else {
@@ -1931,38 +1931,38 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		return this.losTransparentBlocks.contains(block.getType());
 	}
 	
-	protected void playSpellEffects(Entity pos1, Entity pos2) {
-		playSpellEffects(EffectPosition.CASTER, pos1);
-		playSpellEffects(EffectPosition.TARGET, pos2);
-		playSpellEffectsTrail(pos1.getLocation(), pos2.getLocation());
+	protected void playSpellEffects(Entity pos1, Entity pos2, Entity caster) {
+		playSpellEffects(EffectPosition.CASTER, pos1, caster);
+		playSpellEffects(EffectPosition.TARGET, pos2, caster);
+		playSpellEffectsTrail(pos1.getLocation(), pos2.getLocation(), caster);
 	}
 	
-	protected void playSpellEffects(Entity pos1, Location pos2) {
-		playSpellEffects(EffectPosition.CASTER, pos1);
-		playSpellEffects(EffectPosition.TARGET, pos2);
-		playSpellEffectsTrail(pos1.getLocation(), pos2);
+	protected void playSpellEffects(Entity pos1, Location pos2, Entity caster) {
+		playSpellEffects(EffectPosition.CASTER, pos1, caster);
+		playSpellEffects(EffectPosition.TARGET, pos2, caster);
+		playSpellEffectsTrail(pos1.getLocation(), pos2, caster);
 	}
 	
-	protected void playSpellEffects(Location pos1, Entity pos2) {
-		playSpellEffects(EffectPosition.CASTER, pos1);
-		playSpellEffects(EffectPosition.TARGET, pos2);
-		playSpellEffectsTrail(pos1, pos2.getLocation());
+	protected void playSpellEffects(Location pos1, Entity pos2, Entity caster) {
+		playSpellEffects(EffectPosition.CASTER, pos1, caster);
+		playSpellEffects(EffectPosition.TARGET, pos2, caster);
+		playSpellEffectsTrail(pos1, pos2.getLocation(), caster);
 	}
 	
-	protected void playSpellEffects(Location pos1, Location pos2) {
-		playSpellEffects(EffectPosition.CASTER, pos1);
-		playSpellEffects(EffectPosition.TARGET, pos2);
-		playSpellEffectsTrail(pos1, pos2);
+	protected void playSpellEffects(Location pos1, Location pos2, Entity caster) {
+		playSpellEffects(EffectPosition.CASTER, pos1, caster);
+		playSpellEffects(EffectPosition.TARGET, pos2, caster);
+		playSpellEffectsTrail(pos1, pos2, caster);
 	}
 	
-	protected void playSpellEffects(EffectPosition pos, Entity entity) {
+	protected void playSpellEffects(EffectPosition pos, Entity entity, Entity caster) {
 		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			List<SpellEffect> effectsList = new ArrayList<>();
 			if (this.effects != null && this.effects.get(pos) != null) {
 				effectsList.addAll(this.effects.get(pos));
 			}
 			this.effectCollections
-					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+					.forEach(collection -> effectsList.addAll(collection.getEffects(pos, caster)));
 
 			for (SpellEffect effect : effectsList) {
 				Runnable canceler = effect.playEffect(entity);
@@ -1978,14 +1978,14 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		}
 	}
 	
-	protected void playSpellEffects(EffectPosition pos, Location location) {
+	protected void playSpellEffects(EffectPosition pos, Location location, Entity caster) {
 		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			List<SpellEffect> effectsList = new ArrayList<>();
 			if (this.effects != null && this.effects.get(pos) != null) {
 				effectsList.addAll(this.effects.get(pos));
 			}
 			this.effectCollections
-					.forEach(collection -> effectsList.addAll(collection.getEffects(pos)));
+					.forEach(collection -> effectsList.addAll(collection.getEffects(pos, caster)));
 
 			for (SpellEffect effect : effectsList) {
 				effect.playEffect(location);
@@ -1993,7 +1993,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		}
 	}
 	
-	protected void playSpellEffectsTrail(Location loc1, Location loc2) {
+	protected void playSpellEffectsTrail(Location loc1, Location loc2, Entity caster) {
 		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			if (!LocationUtil.isSameWorld(loc1, loc2)) return;
 			EffectPosition trailPos = EffectPosition.TRAIL;
@@ -2002,7 +2002,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 				effectsList.addAll(this.effects.get(trailPos));
 			}
 			this.effectCollections
-					.forEach(collection -> effectsList.addAll(collection.getEffects(trailPos)));
+					.forEach(collection -> effectsList.addAll(collection.getEffects(trailPos, caster)));
 
 			for (SpellEffect effect : effectsList) {
 				effect.playEffect(loc1, loc2);
@@ -2014,7 +2014,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 				rTrailEffects.addAll(this.effects.get(linePos));
 			}
 			this.effectCollections
-					.forEach(collection -> rTrailEffects.addAll(collection.getEffects(linePos)));
+					.forEach(collection -> rTrailEffects.addAll(collection.getEffects(linePos, caster)));
 
 			for (SpellEffect effect: rTrailEffects) {
 				effect.playEffect(loc2, loc1);
@@ -2022,14 +2022,15 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		}
 	}
 	
-	public void playTrackingLinePatterns(EffectPosition pos, Location origin, Location target, Entity originEntity, Entity targetEntity) {
+	public void playTrackingLinePatterns(EffectPosition pos, Location origin, Location target,
+										 Entity originEntity, Entity targetEntity, Entity caster) {
 		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			List<SpellEffect> spellEffects = new ArrayList<>();
 			if (this.effects != null && this.effects.get(pos) != null) {
 				spellEffects.addAll(this.effects.get(pos));
 			}
 			this.effectCollections
-					.forEach(collection -> spellEffects.addAll(collection.getEffects(pos)));
+					.forEach(collection -> spellEffects.addAll(collection.getEffects(pos, caster)));
 
 			for (SpellEffect e: spellEffects) {
 				e.playTrackingLinePatterns(origin, target, originEntity, targetEntity);
@@ -2079,7 +2080,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		}
 	}
 	
-	protected void playSpellEffectsBuff(Entity entity, SpellEffect.SpellEffectActiveChecker checker) {
+	protected void playSpellEffectsBuff(Entity entity, SpellEffect.SpellEffectActiveChecker checker, Entity caster) {
 		if (this.effects != null || !this.effectCollections.isEmpty()) {
 			List<SpellEffect> effectsList = new ArrayList<>();
 			EffectPosition buffPos = EffectPosition.BUFF;
@@ -2087,7 +2088,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 				effectsList.addAll(this.effects.get(buffPos));
 			}
 			this.effectCollections
-					.forEach(collection -> effectsList.addAll(collection.getEffects(buffPos)));
+					.forEach(collection -> effectsList.addAll(collection.getEffects(buffPos, caster)));
 
 			for (SpellEffect effect : effectsList) {
 				effect.playEffectWhileActiveOnEntity(entity, checker);
@@ -2099,7 +2100,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 				effectsOrbitList.addAll(this.effects.get(orbitPos));
 			}
 			this.effectCollections
-					.forEach(collection -> effectsOrbitList.addAll(collection.getEffects(orbitPos)));
+					.forEach(collection -> effectsOrbitList.addAll(collection.getEffects(orbitPos, caster)));
 
 			for (SpellEffect effect : effectsOrbitList) {
 				effect.playEffectWhileActiveOrbit(entity, checker);

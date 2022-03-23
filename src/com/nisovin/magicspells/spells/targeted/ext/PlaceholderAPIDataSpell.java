@@ -46,7 +46,7 @@ public class PlaceholderAPIDataSpell extends TargetedSpell {
 			String value = PlaceholderAPI.setPlaceholders(target, placeholderAPITemplate);
 			MagicSpells.getVariableManager().set(variableName, player, value);
 			
-			playSpellEffects(player, target);
+			playSpellEffects(player, target, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

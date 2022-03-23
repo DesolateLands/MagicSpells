@@ -199,7 +199,7 @@ public class PassiveSpell extends Spell {
 						MagicSpells.debug(3, "    Casting without target");
 						spell.cast(caster, basePower);
 						if (!spellEffectsDone) {
-							playSpellEffects(EffectPosition.CASTER, caster);
+							playSpellEffects(EffectPosition.CASTER, caster, caster);
 							spellEffectsDone = true;
 						}
 					} else if (spell.isTargetedEntitySpell() && target != null && !isActuallyNonTargeted(spell.getSpell())) {
@@ -210,7 +210,7 @@ public class PassiveSpell extends Spell {
 							target = targetEvent.getTarget();
 							spell.castAtEntity(caster, target, targetEvent.getPower());
 							if (!spellEffectsDone) {
-								playSpellEffects(caster, target);
+								playSpellEffects(caster, target, caster);
 								spellEffectsDone = true;
 							}
 						} else {
@@ -231,7 +231,7 @@ public class PassiveSpell extends Spell {
 								loc = targetEvent.getTargetLocation();
 								spell.castAtLocation(caster, loc, targetEvent.getPower());
 								if (!spellEffectsDone) {
-									playSpellEffects(caster, loc);
+									playSpellEffects(caster, loc, caster);
 									spellEffectsDone = true;
 								}
 							} else {
@@ -262,7 +262,7 @@ public class PassiveSpell extends Spell {
 						}
 						spell.cast(caster, power);
 						if (!spellEffectsDone) {
-							playSpellEffects(EffectPosition.CASTER, caster);
+							playSpellEffects(EffectPosition.CASTER, caster, caster);
 							spellEffectsDone = true;
 						}
 					}

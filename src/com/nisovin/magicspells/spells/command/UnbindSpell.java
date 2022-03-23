@@ -84,7 +84,7 @@ public class UnbindSpell extends CommandSpell {
 				}
 				spellbook.save();
 				sendMessage(formatMessage(this.strCastSelf, "%s", spell.getName()), player, args);
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 				return PostCastAction.NO_MESSAGES;
 			}
 		}		

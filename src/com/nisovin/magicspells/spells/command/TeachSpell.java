@@ -98,8 +98,8 @@ public class TeachSpell extends CommandSpell {
 									targetSpellbook.save();
 									sendMessage(formatMessage(this.strCastTarget, "%a", player.getDisplayName(), "%s", spell.getName(), "%t", target.getDisplayName()), target, args);
 									sendMessage(formatMessage(this.strCastSelf, "%a", player.getDisplayName(), "%s", spell.getName(), "%t", target.getDisplayName()), player, args);
-									playSpellEffects(EffectPosition.CASTER, player);
-									playSpellEffects(EffectPosition.TARGET, target);
+									playSpellEffects(EffectPosition.CASTER, player, player);
+									playSpellEffects(EffectPosition.TARGET, target, player);
 									return PostCastAction.NO_MESSAGES;
 								}
 							}

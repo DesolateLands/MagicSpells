@@ -49,7 +49,7 @@ public class MagicBondSpell extends TargetedSpell implements TargetedEntitySpell
             if (target == null) return noTarget(player);
 
             final Player targetedPlayer = target.getTarget();
-            playSpellEffects(player, targetedPlayer);
+            playSpellEffects(player, targetedPlayer, player);
             bondTarget.put(player, targetedPlayer);
             final SpellMonitor monitorBond = new SpellMonitor(player, targetedPlayer, power);
             MagicSpells.registerEvents(monitorBond);
@@ -74,13 +74,13 @@ public class MagicBondSpell extends TargetedSpell implements TargetedEntitySpell
 
     @Override
     public boolean castAtEntity(Player caster, LivingEntity target, float power) {
-        playSpellEffects(caster, target);
+        playSpellEffects(caster, target, caster);
         return true;
     }
 
     @Override
     public boolean castAtEntity(LivingEntity target, float power) {
-        playSpellEffects(EffectPosition.TARGET, target);
+        playSpellEffects(EffectPosition.TARGET, target, null);
         return true;
     }
     

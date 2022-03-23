@@ -78,15 +78,15 @@ public class ItemBombSpell extends InstantSpell implements TargetedLocationSpell
 			public void run() {
 				Location l = i.getLocation();
 				i.remove();
-				playSpellEffects(EffectPosition.TARGET, l);
+				playSpellEffects(EffectPosition.TARGET, l, player);
 				spell.castAtLocation(player, l, power);
 			}
 		}, this.delay);
 		
 		if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		} else {
-			playSpellEffects(EffectPosition.CASTER, l);
+			playSpellEffects(EffectPosition.CASTER, l, player);
 		}
 	}
 	

@@ -72,8 +72,8 @@ public class RemoveMarksSpell extends TargetedSpell implements TargetedLocationS
 			if (l.getLocation().distanceSquared(loc) < radSq) iter.remove();
 		}
 		markSpell.setMarks(marks);
-		if (caster != null) playSpellEffects(EffectPosition.CASTER, caster);
-		playSpellEffects(EffectPosition.TARGET, loc);
+		if (caster != null) playSpellEffects(EffectPosition.CASTER, caster, caster);
+		playSpellEffects(EffectPosition.TARGET, loc, caster);
 	}
 
 	@Override

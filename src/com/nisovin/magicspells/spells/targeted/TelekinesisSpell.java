@@ -58,7 +58,7 @@ public class TelekinesisSpell extends TargetedSpell implements TargetedLocationS
 			boolean activated = activate(player, target);
 			if (!activated) return noTarget(player);
 			
-			playSpellEffects(player, target.getLocation());
+			playSpellEffects(player, target.getLocation(), player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -89,7 +89,7 @@ public class TelekinesisSpell extends TargetedSpell implements TargetedLocationS
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
 		boolean activated = activate(caster, target.getBlock());
-		if (activated) playSpellEffects(caster, target);
+		if (activated) playSpellEffects(caster, target, caster);
 		return activated;
 	}
 

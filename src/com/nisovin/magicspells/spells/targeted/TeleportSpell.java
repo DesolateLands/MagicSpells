@@ -59,9 +59,9 @@ public class TeleportSpell extends TargetedSpell implements TargetedEntitySpell 
 
 		if (!BlockUtils.isPathable(targetLoc.getBlock())) return false;
 
-		playSpellEffects(EffectPosition.CASTER, caster);
-		playSpellEffects(EffectPosition.TARGET, target);
-		playSpellEffectsTrail(startLoc, targetLoc);
+		playSpellEffects(EffectPosition.CASTER, caster, caster);
+		playSpellEffects(EffectPosition.TARGET, target, caster);
+		playSpellEffectsTrail(startLoc, targetLoc, caster);
 
 		return caster.teleport(targetLoc);
 	}

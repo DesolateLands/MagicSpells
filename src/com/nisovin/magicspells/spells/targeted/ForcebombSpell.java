@@ -98,14 +98,14 @@ public class ForcebombSpell extends TargetedSpell implements TargetedLocationSpe
 				}
 				if (v.getY() > maxYForce/10.0) v.setY(maxYForce/10.0);
 				entity.setVelocity(v);
-				playSpellEffects(EffectPosition.TARGET, entity);
+				playSpellEffects(EffectPosition.TARGET, entity, player);
 			}
 	    }
-		playSpellEffects(EffectPosition.SPECIAL, location);
+		playSpellEffects(EffectPosition.SPECIAL, location, player);
 		if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		} else {
-			playSpellEffects(EffectPosition.CASTER, location);
+			playSpellEffects(EffectPosition.CASTER, location, player);
 		}
 	}
 

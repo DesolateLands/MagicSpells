@@ -225,8 +225,8 @@ public class ArrowSpell extends Spell {
 			Entity projectile = event.getProjectile();
 			if (!castEvent.isCancelled()) {
 				projectile.setMetadata(METADATA_KEY, new FixedMetadataValue(MagicSpells.plugin, new ArrowSpellData(spell, castEvent.getPower(), castEvent.getReagents())));
-				spell.playSpellEffects(EffectPosition.PROJECTILE, event.getProjectile());
-				spell.playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, shooter.getLocation(), projectile.getLocation(), shooter, projectile);
+				spell.playSpellEffects(EffectPosition.PROJECTILE, event.getProjectile(), shooter);
+				spell.playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, shooter.getLocation(), projectile.getLocation(), shooter, projectile, shooter);
 			} else {
 				event.setCancelled(true);
 				projectile.remove();

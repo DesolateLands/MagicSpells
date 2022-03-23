@@ -134,14 +134,14 @@ public class DestroySpell extends TargetedSpell implements TargetedLocationSpell
 			}
 			if (b != null && b.getType() != Material.AIR) {
 				Location loc = b.getLocation().add(.5, .5, .5);
-				doIt(player.getLocation(), loc);
-				playSpellEffects(player, loc);
+				doIt(player.getLocation(), loc, player);
+				playSpellEffects(player, loc, player);
 			}
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
 	
-	private void doIt(Location source, Location target) {
+	private void doIt(Location source, Location target, Player caster) {
 		int centerX = target.getBlockX();
 		int centerY = target.getBlockY();
 		int centerZ = target.getBlockZ();
@@ -185,8 +185,8 @@ public class DestroySpell extends TargetedSpell implements TargetedLocationSpell
 			MagicMaterial mat = new MagicBlockMaterial(b.getState().getData());
 			Location l = new Location(target.getWorld(), b.getX() + 0.5, b.getY() + 0.5, b.getZ() + 0.5);
 			FallingBlock fb = mat.spawnFallingBlock(l);
-			playSpellEffects(EffectPosition.PROJECTILE, fb);
-			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, source, fb.getLocation(), null, fb);
+			playSpellEffects(EffectPosition.PROJECTILE, fb, caster);
+			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, source, fb.getLocation(), null, fb, caster);
 			fb.setDropItem(false);
 			Vector v;
 			if (velocityType == VelocityType.OUT) {
@@ -246,8 +246,8 @@ public class DestroySpell extends TargetedSpell implements TargetedLocationSpell
 
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
-		doIt(caster.getLocation(), target);
-		playSpellEffects(caster, target);
+		doIt(caster.getLocation(), target, caster);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 
@@ -258,15 +258,15 @@ public class DestroySpell extends TargetedSpell implements TargetedLocationSpell
 
 	@Override
 	public boolean castAtEntityFromLocation(Player caster, Location from, LivingEntity target, float power) {
-		doIt(from, target.getLocation());
-		playSpellEffects(from, target);
+		doIt(from, target.getLocation(), caster);
+		playSpellEffects(from, target, caster);
 		return true;
 	}
 
 	@Override
 	public boolean castAtEntityFromLocation(Location from, LivingEntity target, float power) {
-		doIt(from, target.getLocation());
-		playSpellEffects(from, target);
+		doIt(from, target.getLocation(), null);
+		playSpellEffects(from, target, null);
 		return true;
 	}
 	

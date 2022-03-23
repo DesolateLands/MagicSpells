@@ -154,7 +154,7 @@ public class WindglideSpell extends BuffSpell {
                 pl.setVelocity(v);
 
                 if (glideSpell != null && glideSpell.isTargetedLocationSpell()) glideSpell.castAtLocation(pl, pLoc, 1);
-                playSpellEffects(EffectPosition.SPECIAL, pLoc);
+                playSpellEffects(EffectPosition.SPECIAL, pLoc, pl);
                 addUseAndChargeCost(pl);
             }
         }

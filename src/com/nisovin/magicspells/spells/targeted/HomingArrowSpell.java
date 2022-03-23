@@ -55,15 +55,15 @@ public class HomingArrowSpell extends TargetedSpell implements TargetedEntitySpe
 		}
 		v.multiply(velocity * power);
 		projectile.setVelocity(v);
-		playSpellEffects(EffectPosition.PROJECTILE, projectile);
-		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, projectile.getLocation(), player, projectile);
+		playSpellEffects(EffectPosition.PROJECTILE, projectile, player);
+		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, projectile.getLocation(), player, projectile, player);
 		arrows.add(new HomingArrow(player, projectile, target, power));
 		if (monitor == 0) monitor = MagicSpells.scheduleRepeatingTask(new HomingArrowMonitor(), 1, 1);
 
 		if (from != null) {
-			playSpellEffects(EffectPosition.CASTER, from);
+			playSpellEffects(EffectPosition.CASTER, from, player);
 		} else if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class HomingArrowSpell extends TargetedSpell implements TargetedEntitySpe
 				HomingArrow arrow = iter.next();
 				if (arrow.arrow.isDead() || arrow.arrow.isOnGround() || arrow.target.isDead() || !arrow.target.isValid()) {
 					iter.remove();
-					playSpellEffects(EffectPosition.TARGET, arrow.arrow.getLocation());
+					playSpellEffects(EffectPosition.TARGET, arrow.arrow.getLocation(), arrow.shooter);
 				} else { // if (arrow.arrow.getLocation().distanceSquared(arrow.target.getLocation()) > 5 * 5) {
 					// TODO see what can be cleaned up here with constructing locations and vectors
 					Vector v = arrow.target.getLocation().add(0, 0.75, 0).toVector().subtract(arrow.arrow.getLocation().toVector()).normalize();
@@ -126,7 +126,7 @@ public class HomingArrowSpell extends TargetedSpell implements TargetedEntitySpe
 					arrow.arrow.setVelocity(v);
 					//Location l = arrow.arrow.getLocation().setDirection(v);
 					//arrow.arrow.teleport(l);
-					if (specialEffectInterval > 0 && c % specialEffectInterval == 0) playSpellEffects(EffectPosition.SPECIAL, arrow.arrow.getLocation());
+					if (specialEffectInterval > 0 && c % specialEffectInterval == 0) playSpellEffects(EffectPosition.SPECIAL, arrow.arrow.getLocation(), arrow.shooter);
 				}
 			}
 			

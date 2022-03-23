@@ -68,7 +68,7 @@ public class MarkSpell extends InstantSpell implements TargetedLocationSpell {
 		if (state == SpellCastState.NORMAL) {
 			this.marks.put(getPlayerKey(player), new MagicLocation(player.getLocation()));
 			if (this.permanentMarks) saveMarks();
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;		
 	}
@@ -163,7 +163,7 @@ public class MarkSpell extends InstantSpell implements TargetedLocationSpell {
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
 		this.marks.put(getPlayerKey(caster), new MagicLocation(target));
-		if (caster != null) playSpellEffects(caster, target);
+		if (caster != null) playSpellEffects(caster, target, caster);
 		return true;
 	}
 	

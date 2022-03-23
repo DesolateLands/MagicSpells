@@ -17,14 +17,14 @@ public class DummySpell extends InstantSpell {
 	@Override
 	public PostCastAction castSpell(Player player, SpellCastState state, float power, String[] args) {
 		if (state == SpellCastState.NORMAL) {
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
 	
 	@Override
 	public boolean castFromConsole(CommandSender sender, String[] args) {
-		playSpellEffects(EffectPosition.CASTER, (Entity)null);
+		playSpellEffects(EffectPosition.CASTER, (Entity)null, (Entity)null);
 		return true;
 	}
 

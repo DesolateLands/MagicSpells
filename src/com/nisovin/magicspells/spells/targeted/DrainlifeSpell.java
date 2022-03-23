@@ -156,9 +156,9 @@ public class DrainlifeSpell extends TargetedSpell implements TargetedEntitySpell
 		// Give to caster
 		if (instant) {
 			giveToCaster(player, give);
-			playSpellEffects(player, target);
+			playSpellEffects(player, target, player);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, player);
 		}		
 		
 		// Show animation
@@ -225,12 +225,12 @@ public class DrainlifeSpell extends TargetedSpell implements TargetedEntitySpell
 			Location playAt = current.toLocation(world);
 			playAt.setDirection(tempVector);
 			if (useSmoke) world.playEffect(playAt, Effect.SMOKE, 4);
-			playSpellEffects(EffectPosition.SPECIAL, playAt);
+			playSpellEffects(EffectPosition.SPECIAL, playAt, caster);
 			if (current.distanceSquared(targetVector) < 4 || tick > range * 1.5) {
 				stop();
 				if (!instant) {
 					giveToCaster(caster, giveAmtAnimator);
-					playSpellEffects(EffectPosition.CASTER, caster);
+					playSpellEffects(EffectPosition.CASTER, caster, caster);
 				}
 			}
 		}

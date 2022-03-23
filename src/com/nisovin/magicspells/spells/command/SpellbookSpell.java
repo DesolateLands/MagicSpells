@@ -144,7 +144,7 @@ public class SpellbookSpell extends CommandSpell {
 						}
 						saveSpellbooks();
 						sendMessage(formatMessage(this.strCastSelf, "%s", spell.getName()), player, args);
-						playSpellEffects(player, target.getLocation());
+						playSpellEffects(player, target.getLocation(), player);
 						return PostCastAction.NO_MESSAGES;
 					}
 				}
@@ -193,7 +193,7 @@ public class SpellbookSpell extends CommandSpell {
 						spellbook.addSpell(spell);
 						spellbook.save();
 						sendMessage(formatMessage(this.strLearned, "%s", spell.getName()), player, MagicSpells.NULL_ARGS);
-						playSpellEffects(EffectPosition.DELAYED, player);
+						playSpellEffects(EffectPosition.DELAYED, player, player);
 						int uses = this.bookUses.get(i);
 						if (uses > 0) {
 							uses--;

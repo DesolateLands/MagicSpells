@@ -30,7 +30,7 @@ public class PermissionSpell extends InstantSpell {
 			for (String node : this.permissionNodes) {
 				player.addAttachment(MagicSpells.plugin, node, true, this.duration);
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}

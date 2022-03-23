@@ -131,14 +131,14 @@ public class RitualSpell extends InstantSpell {
 			this.channelers.put(caster, caster.getLocation());
 			this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(MagicSpells.plugin, this, tickInterval, tickInterval);
 			if (showProgressOnExpBar) MagicSpells.getExpBarManager().lock(caster, this);
-			playSpellEffects(EffectPosition.CASTER, caster);
+			playSpellEffects(EffectPosition.CASTER, caster, caster);
 		}
 		
 		public void addChanneler(Player player) {
 			if (this.channelers.containsKey(player)) return;
 			this.channelers.put(player, player.getLocation());
 			if (showProgressOnExpBar) MagicSpells.getExpBarManager().lock(player, this);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		
 		public void removeChanneler(Player player) {
@@ -179,7 +179,7 @@ public class RitualSpell extends InstantSpell {
 				}
 				// Spell effect
 				if (this.duration % effectInterval == 0) {
-					playSpellEffects(EffectPosition.CASTER, player);
+					playSpellEffects(EffectPosition.CASTER, player, player);
 				}
 			}
 			if (interrupted) {
@@ -194,7 +194,7 @@ public class RitualSpell extends InstantSpell {
 				if (count >= reqParticipants && !this.caster.isDead() && this.caster.isOnline()) {
 					if (chargeReagentsImmediately || hasReagents(this.caster)) {
 						stop(strRitualSuccess);
-						playSpellEffects(EffectPosition.DELAYED, this.caster);
+						playSpellEffects(EffectPosition.DELAYED, this.caster, this.caster);
 						PostCastAction action = spell.castSpell(this.caster, SpellCastState.NORMAL, this.power, args);
 						if (!chargeReagentsImmediately && action.chargeReagents()) {
 							removeReagents(this.caster);

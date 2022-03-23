@@ -59,10 +59,10 @@ public class HealSpell extends TargetedSpell implements TargetedEntitySpell {
 		if (health > target.getMaxHealth()) health = target.getMaxHealth();
 		target.setHealth(health);
 
-		playSpellEffects(EffectPosition.TARGET, target);
+		playSpellEffects(EffectPosition.TARGET, target, player);
 		if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
-			playSpellEffectsTrail(player.getLocation(), target.getLocation());			
+			playSpellEffects(EffectPosition.CASTER, player, player);
+			playSpellEffectsTrail(player.getLocation(), target.getLocation(), player);
 		}
 		
 		return true;

@@ -65,9 +65,9 @@ public class ForcepushSpell extends InstantSpell {
 			}
 			if (v.getY() > (this.maxYForce/10.0)) v.setY(this.maxYForce/10.0);
 			target.setVelocity(v);
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, player);
 	    }
-		playSpellEffects(EffectPosition.CASTER, player);
+		playSpellEffects(EffectPosition.CASTER, player, player);
 	}
 
 }

@@ -167,9 +167,9 @@ public class TotemSpell extends TargetedSpell implements TargetedLocationSpell {
         totems.add(new Totem(caster, loc, power));
         ticker.start();
         if (caster != null) {
-            playSpellEffects(caster, loc);
+            playSpellEffects(caster, loc, caster);
         } else {
-            playSpellEffects(EffectPosition.TARGET, loc);
+            playSpellEffects(EffectPosition.TARGET, loc, caster);
         }
     }
 
@@ -300,7 +300,7 @@ public class TotemSpell extends TargetedSpell implements TargetedLocationSpell {
                     activated = spell.castAtLocation(totemLocation, power) || activated;
                 }
             }
-            playSpellEffects(EffectPosition.SPECIAL, totemLocation);
+            playSpellEffects(EffectPosition.SPECIAL, totemLocation, caster);
             if (totalPulses > 0 && (activated || !onlyCountOnSuccess)) {
                 pulseCount += 1;
                 if (pulseCount >= totalPulses) {
@@ -314,7 +314,7 @@ public class TotemSpell extends TargetedSpell implements TargetedLocationSpell {
         public void stop() {
             if (!totemLocation.getChunk().isLoaded()) totemLocation.getChunk().load();
             armorStand.remove();
-            playSpellEffects(EffectPosition.DISABLED, totemLocation);
+            playSpellEffects(EffectPosition.DISABLED, totemLocation, caster);
             if (spellOnBreak != null) {
                 if (caster == null) {
                     spellOnBreak.castAtLocation(totemLocation, power);

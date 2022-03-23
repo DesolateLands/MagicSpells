@@ -131,7 +131,7 @@ public class WallSpell extends InstantSpell {
 					blockSet.removeAfter(Math.round(wallDuration * power), (TemporaryBlockSet set) -> blockSets.remove(set));
 				}
 				
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			}
 		}
 		return PostCastAction.HANDLE_NORMALLY;

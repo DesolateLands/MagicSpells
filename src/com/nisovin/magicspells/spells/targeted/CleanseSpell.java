@@ -109,9 +109,9 @@ public class CleanseSpell extends TargetedSpell implements TargetedEntitySpell {
 			}
 		}
 		if (caster != null) {
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, caster);
 		}
 	}
 

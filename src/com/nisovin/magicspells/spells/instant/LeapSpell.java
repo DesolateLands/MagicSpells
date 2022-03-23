@@ -67,7 +67,7 @@ public class LeapSpell extends InstantSpell {
 				player.setVelocity(v);
 			}
 			jumping.add(player);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 
 		return PostCastAction.HANDLE_NORMALLY;
@@ -80,7 +80,7 @@ public class LeapSpell extends InstantSpell {
         if (jumping.isEmpty()) return;
         if (!jumping.remove(pl)) return;
         if (landSpell != null) landSpell.cast(pl, 1);
-        playSpellEffects(EffectPosition.TARGET, pl.getLocation());
+        playSpellEffects(EffectPosition.TARGET, pl.getLocation(), pl);
         if (cancelDamage) e.setCancelled(true);
     }
 

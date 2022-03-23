@@ -247,7 +247,7 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 	public PostCastAction castSpell(Player player, SpellCastState state, float power, String[] args) {
 		if (state == SpellCastState.NORMAL) {
 			new ProjectileTracker(player, player.getLocation(), power);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -324,7 +324,7 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 			if (maxDuration > 0 && this.startTime + maxDuration < System.currentTimeMillis()) {
 				if (hitAirAfterDuration && durationSpell != null && durationSpell.isTargetedLocationSpell()) {
 					durationSpell.castAtLocation(this.caster, this.currentLocation, this.power);
-					playSpellEffects(EffectPosition.TARGET, this.currentLocation);
+					playSpellEffects(EffectPosition.TARGET, this.currentLocation, this.caster);
 				}
 				stop();
 				return;
@@ -378,7 +378,7 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 			effect.display(data, this.currentLocation, null, renderDistance, particleXSpread, particleYSpread, particleZSpread, particleSpeed, particleCount);
 
 			// Play effects
-			if (specialEffectInterval > 0 && this.counter % specialEffectInterval == 0) playSpellEffects(EffectPosition.SPECIAL, this.currentLocation);
+			if (specialEffectInterval > 0 && this.counter % specialEffectInterval == 0) playSpellEffects(EffectPosition.SPECIAL, this.currentLocation, this.caster);
 
 			// Acceleration
 			if (acceleration != 0 && accelerationDelay > 0 && this.counter % accelerationDelay == 0) this.currentVelocity.multiply(acceleration);
@@ -395,13 +395,13 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 				if (hitGround && groundSpell != null && groundSpell.isTargetedLocationSpell()) {
 					Util.setLocationFacingFromVector(this.previousLocation, this.currentVelocity);
 					groundSpell.castAtLocation(this.caster, this.previousLocation, this.power);
-					playSpellEffects(EffectPosition.TARGET, this.currentLocation);
+					playSpellEffects(EffectPosition.TARGET, this.currentLocation, this.caster);
 				}
 				if (stopOnHitGround) stop();
 			} else if (this.currentLocation.distanceSquared(startLocation) >= maxDistanceSquared) {
 				if (hitAirAtEnd && airSpell != null && airSpell.isTargetedLocationSpell()) {
 					airSpell.castAtLocation(this.caster, this.currentLocation.clone(), this.power);
-					playSpellEffects(EffectPosition.TARGET, this.currentLocation);
+					playSpellEffects(EffectPosition.TARGET, this.currentLocation, this.caster);
 				}
 				stop();
 			} else if (this.inRange != null) {
@@ -426,10 +426,10 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 							this.power = event.getPower();
 						}
 						entitySpell.castAtEntity(this.caster, e, this.power);
-						playSpellEffects(EffectPosition.TARGET, e);
+						playSpellEffects(EffectPosition.TARGET, e, this.caster);
 					} else if (entitySpell != null && entitySpell.isTargetedLocationSpell()) {
 						entitySpell.castAtLocation(this.caster, this.currentLocation.clone(), this.power);
-						playSpellEffects(EffectPosition.TARGET, this.currentLocation);
+						playSpellEffects(EffectPosition.TARGET, this.currentLocation, this.caster);
 					}
 
 					this.inRange.remove(i);
@@ -454,7 +454,7 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 		}
 
 		public void stop() {
-			playSpellEffects(EffectPosition.DELAYED, this.currentLocation);
+			playSpellEffects(EffectPosition.DELAYED, this.currentLocation, this.caster);
 			MagicSpells.cancelTask(taskId);
 			this.caster = null;
 			this.startLocation = null;
@@ -477,14 +477,14 @@ public class ParticleProjectileSpell extends InstantSpell implements TargetedLoc
 		Location loc = target.clone();
 		loc.setDirection(caster.getLocation().getDirection());
 		new ProjectileTracker(caster, target, power);
-		playSpellEffects(EffectPosition.CASTER, caster);
+		playSpellEffects(EffectPosition.CASTER, caster, caster);
 		return true;
 	}
 
 	@Override
 	public boolean castAtLocation(Location target, float power) {
 		new ProjectileTracker(null, target, power);
-		playSpellEffects(EffectPosition.CASTER, target);
+		playSpellEffects(EffectPosition.CASTER, target, null);
 		return true;
 	}
 

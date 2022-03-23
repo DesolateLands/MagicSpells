@@ -48,7 +48,7 @@ public class CrippleSpell extends TargetedSpell implements TargetedEntitySpell {
 				// Fail
 				return noTarget(player);
 			}
-			playSpellEffects(player, target.getTarget());
+			playSpellEffects(player, target.getTarget(), player);
 			cripple(target.getTarget(), power);
 			sendMessages(player, target.getTarget());
 			return PostCastAction.NO_MESSAGES;
@@ -60,7 +60,7 @@ public class CrippleSpell extends TargetedSpell implements TargetedEntitySpell {
 	@Override
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
 		if (!validTargetList.canTarget(caster, target)) return false;
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		cripple(target, power);
 		return true;
 	}
@@ -68,7 +68,7 @@ public class CrippleSpell extends TargetedSpell implements TargetedEntitySpell {
 	@Override
 	public boolean castAtEntity(LivingEntity target, float power) {
 		if (!validTargetList.canTarget(target)) return false;
-		playSpellEffects(EffectPosition.TARGET, target);
+		playSpellEffects(EffectPosition.TARGET, target, null);
 		cripple(target, power);
 		return true;
 	}

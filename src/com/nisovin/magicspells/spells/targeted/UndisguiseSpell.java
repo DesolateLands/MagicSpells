@@ -41,9 +41,9 @@ public class UndisguiseSpell extends TargetedSpell implements TargetedEntitySpel
 		if (manager == null) return false;
 		manager.removeDisguise(player);
 		if (caster != null) {
-			playSpellEffects(caster, player);
+			playSpellEffects(caster, player, caster);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, player);
+			playSpellEffects(EffectPosition.TARGET, player, caster);
 		}
 		return true;
 	}

@@ -59,10 +59,10 @@ public class PurgeSpell extends InstantSpell implements TargetedLocationSpell {
 				if (!this.validTargetList.canTarget(player, entity)) continue;
 				((LivingEntity)entity).setHealth(0);
 				killed = true;
-				playSpellEffects(EffectPosition.TARGET, entity);
+				playSpellEffects(EffectPosition.TARGET, entity, player);
 			}
 			if (killed) {
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			} else {
 				return PostCastAction.ALREADY_HANDLED;
 			}
@@ -88,11 +88,11 @@ public class PurgeSpell extends InstantSpell implements TargetedLocationSpell {
 				if (event.isCancelled()) continue;
 				success = true;
 				((LivingEntity)e).setHealth(0);
-				playSpellEffects(EffectPosition.TARGET, e.getLocation());
+				playSpellEffects(EffectPosition.TARGET, e.getLocation(), caster);
 			} else {
 				success = true;
 				e.remove();
-				playSpellEffects(EffectPosition.TARGET, e.getLocation());
+				playSpellEffects(EffectPosition.TARGET, e.getLocation(), caster);
 			}
 		}
 		return success;

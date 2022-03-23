@@ -70,9 +70,9 @@ public class PotionEffectSpell extends TargetedSpell implements TargetedEntitySp
 			
 			applyPotionEffect(player, target, new PotionEffect(type, dur, str, ambient, !hidden));
 			if (targeted) {
-				playSpellEffects(player, target);
+				playSpellEffects(player, target, player);
 			} else {
-				playSpellEffects(EffectPosition.CASTER, player);
+				playSpellEffects(EffectPosition.CASTER, player, player);
 			}
 			sendMessages(player, target);
 			return PostCastAction.NO_MESSAGES;
@@ -99,10 +99,10 @@ public class PotionEffectSpell extends TargetedSpell implements TargetedEntitySp
 		PotionEffect effect = new PotionEffect(type, dur, str, ambient, !hidden);
 		if (targeted) {
 			applyPotionEffect(caster, target, effect);
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 		} else {
 			applyPotionEffect(caster, caster, effect);
-			playSpellEffects(EffectPosition.CASTER, caster);
+			playSpellEffects(EffectPosition.CASTER, caster, caster);
 		}
 		return true;
 	}
@@ -114,7 +114,7 @@ public class PotionEffectSpell extends TargetedSpell implements TargetedEntitySp
 		int str = spellPowerAffectsStrength ? Math.round(strength * power) : strength;
 		PotionEffect effect = new PotionEffect(type, dur, str, ambient, !hidden);
 		applyPotionEffect(null, target, effect);
-		playSpellEffects(EffectPosition.TARGET, target);
+		playSpellEffects(EffectPosition.TARGET, target, null);
 		return true;
 	}
 

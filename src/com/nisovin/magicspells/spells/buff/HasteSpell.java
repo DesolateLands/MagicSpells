@@ -97,11 +97,11 @@ public class HasteSpell extends BuffSpell {
 			event.setCancelled(true);
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, boostDuration, amplifier), true);
 			addUseAndChargeCost(player);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		} else {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1, 0), true);
 			player.removePotionEffect(PotionEffectType.SPEED);
-			playSpellEffects(EffectPosition.DISABLED, player);
+			playSpellEffects(EffectPosition.DISABLED, player, player);
 		}
 	}
 

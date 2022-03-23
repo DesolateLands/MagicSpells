@@ -126,7 +126,7 @@ public class BeamSpell extends InstantSpell implements TargetedLocationSpell {
 			this.caster = caster;
 			this.power = power;
 
-			playSpellEffects(EffectPosition.CASTER, this.caster);
+			playSpellEffects(EffectPosition.CASTER, this.caster, this.caster);
 
 			if (beamVertOffset != 0) this.startLoc.setPitch(this.startLoc.getPitch() - beamVertOffset);
 			if (beamHorizOffset != 0) this.startLoc.setYaw(this.startLoc.getYaw() + beamHorizOffset);
@@ -157,12 +157,12 @@ public class BeamSpell extends InstantSpell implements TargetedLocationSpell {
 				//check block collision
 				if (!isTransparent(this.currentLoc.getBlock())) {
 					//play effects when beam hits a block
-					playSpellEffects(EffectPosition.DISABLED, this.currentLoc);
+					playSpellEffects(EffectPosition.DISABLED, this.currentLoc, this.caster);
 					if (groundSpell != null && groundSpell.isTargetedLocationSpell()) groundSpell.castAtLocation(this.caster, this.currentLoc, this.power);
 					if (stopOnHitGround) break;
 				}
 
-				playSpellEffects(EffectPosition.SPECIAL, this.currentLoc);
+				playSpellEffects(EffectPosition.SPECIAL, this.currentLoc, this.caster);
 
 				box.setCenter(this.currentLoc);
 
@@ -179,7 +179,7 @@ public class BeamSpell extends InstantSpell implements TargetedLocationSpell {
 					if (event.isCancelled()) continue;
 
 					if (spell != null && spell.isTargetedEntitySpell()) spell.castAtEntity(this.caster, event.getTarget(), event.getPower());
-					playSpellEffects(EffectPosition.TARGET, event.getTarget());
+					playSpellEffects(EffectPosition.TARGET, event.getTarget(), this.caster);
 					this.immune.add(e);
 					if (stopOnHitEntity) break mainLoop;
 				}
@@ -187,7 +187,7 @@ public class BeamSpell extends InstantSpell implements TargetedLocationSpell {
 
 			//end of the beam
 			if (d >= maxDistance) {
-				playSpellEffects(EffectPosition.DELAYED, this.currentLoc);
+				playSpellEffects(EffectPosition.DELAYED, this.currentLoc, this.caster);
 				if (endSpell != null && endSpell.isTargetedLocationSpell()) endSpell.castAtLocation(this.caster, this.currentLoc, this.power);
 			}
 

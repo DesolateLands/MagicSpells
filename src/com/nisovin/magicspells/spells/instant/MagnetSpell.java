@@ -46,18 +46,18 @@ public class MagnetSpell extends InstantSpell implements TargetedLocationSpell {
 			
 			magnet(player, items, power);
 		}
-		playSpellEffects(EffectPosition.CASTER, player);
+		playSpellEffects(EffectPosition.CASTER, player, player);
 		return PostCastAction.HANDLE_NORMALLY;
 	}
 	
 	private void magnet(Player player, Collection<Item> items, float power) {
 		Location loc = player.getLocation();
 		for (Item i: items) {
-			magnet(loc, i, power);
+			magnet(loc, i, power, player);
 		}
 	}
 		
-	private void magnet(Location origin, Item item, float power) {
+	private void magnet(Location origin, Item item, float power, Player caster) {
 		
 		// Handle gravity removal
 		if (this.removeItemGravity) {
@@ -71,7 +71,7 @@ public class MagnetSpell extends InstantSpell implements TargetedLocationSpell {
 			item.setVelocity(origin.toVector().subtract(item.getLocation().toVector()).normalize().multiply(this.velocity * power));
 		}
 		
-		playSpellEffects(EffectPosition.PROJECTILE, item);
+		playSpellEffects(EffectPosition.PROJECTILE, item, caster);
 	}
 
 	@Override

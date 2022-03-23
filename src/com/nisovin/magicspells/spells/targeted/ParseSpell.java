@@ -58,7 +58,7 @@ public class ParseSpell extends TargetedSpell {
 			if (receivedValue.equals(expectedValue)) {
 				MagicSpells.getVariableManager().set(parseToVariable, target, parseTo);
 
-				playSpellEffects(player, target);
+				playSpellEffects(player, target, player);
 			}
 		}
 		return PostCastAction.HANDLE_NORMALLY;

@@ -232,7 +232,7 @@ public class ConjureSpell extends InstantSpell implements TargetedEntitySpell, T
 					i.setItemStack(item);
 					i.setPickupDelay(pickupDelay);
 					MagicSpells.getVolatileCodeHandler().setGravity(i, itemHasGravity);
-					playSpellEffects(EffectPosition.SPECIAL, i);
+					playSpellEffects(EffectPosition.SPECIAL, i, player);
 					//player.getWorld().dropItem(loc, item).setItemStack(item);
 				}
 			} else {
@@ -241,7 +241,7 @@ public class ConjureSpell extends InstantSpell implements TargetedEntitySpell, T
 		}
 		
 		if (updateInv && forceUpdateInventory) player.updateInventory();
-		playSpellEffects(EffectPosition.CASTER, player);
+		playSpellEffects(EffectPosition.CASTER, player, player);
 	}
 	
 	private void individual(List<ItemStack> items, float power) {
@@ -307,7 +307,7 @@ public class ConjureSpell extends InstantSpell implements TargetedEntitySpell, T
 				dropped.setVelocity(v);
 			}
 			MagicSpells.getVolatileCodeHandler().setGravity(dropped, itemHasGravity);
-			playSpellEffects(EffectPosition.SPECIAL, dropped);
+			playSpellEffects(EffectPosition.SPECIAL, dropped, null);
 		}
 		return true;
 	}

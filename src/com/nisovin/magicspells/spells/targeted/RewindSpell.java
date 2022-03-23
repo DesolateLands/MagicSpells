@@ -80,7 +80,7 @@ public class RewindSpell extends TargetedSpell implements TargetedEntitySpell {
                 sendMessages(player, targetInfo.getTarget());
                 new Rewinder(player, targetInfo.getTarget(), power);
             }
-            playSpellEffects(EffectPosition.CASTER, player);
+            playSpellEffects(EffectPosition.CASTER, player, player);
         }
         return PostCastAction.HANDLE_NORMALLY;
     }
@@ -105,16 +105,16 @@ public class RewindSpell extends TargetedSpell implements TargetedEntitySpell {
     public boolean castAtEntity(Player player, LivingEntity livingEntity, float v) {
         new Rewinder(player, livingEntity, v);
         sendMessages(player, livingEntity);
-        playSpellEffects(EffectPosition.CASTER, player);
-        playSpellEffects(EffectPosition.TARGET, livingEntity);
-        playSpellEffectsTrail(player.getLocation(), livingEntity.getLocation());
+        playSpellEffects(EffectPosition.CASTER, player, player);
+        playSpellEffects(EffectPosition.TARGET, livingEntity, player);
+        playSpellEffectsTrail(player.getLocation(), livingEntity.getLocation(), player);
         return true;
     }
 
     @Override
     public boolean castAtEntity(LivingEntity livingEntity, float v) {
         new Rewinder(null, livingEntity, v);
-        playSpellEffects(EffectPosition.TARGET, livingEntity);
+        playSpellEffects(EffectPosition.TARGET, livingEntity, null);
         return true;
     }
 
@@ -148,7 +148,7 @@ public class RewindSpell extends TargetedSpell implements TargetedEntitySpell {
             // Save locations
             this.locations.add(this.entity.getLocation());
             // Loop through already saved locations and play effects with special position
-            if (specialEffectInterval > 0 && this.counter % specialEffectInterval == 0) this.locations.forEach(loc -> playSpellEffects(EffectPosition.SPECIAL, loc));
+            if (specialEffectInterval > 0 && this.counter % specialEffectInterval == 0) this.locations.forEach(loc -> playSpellEffects(EffectPosition.SPECIAL, loc, caster));
             counter++;
             if (counter >= startDuration) rewind();
         }
@@ -199,7 +199,7 @@ public class RewindSpell extends TargetedSpell implements TargetedEntitySpell {
             if (this.tempLocation != null) {
                 this.entity.teleport(this.tempLocation);
                 this.locations.remove(tempLocation);
-                if (delayedEffectInterval > 0 && this.counter % delayedEffectInterval == 0) this.locations.forEach(loc -> playSpellEffects(EffectPosition.DELAYED, loc));
+                if (delayedEffectInterval > 0 && this.counter % delayedEffectInterval == 0) this.locations.forEach(loc -> playSpellEffects(EffectPosition.DELAYED, loc, null));
             }
 
             counter--;

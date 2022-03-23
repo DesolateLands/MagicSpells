@@ -214,7 +214,7 @@ public class TomeSpell extends CommandSpell {
 				if (uses <= 0 && this.consumeBook) {
 					HandHandler.setItemInMainHand(event.getPlayer(), null);
 				}
-				playSpellEffects(EffectPosition.DELAYED, event.getPlayer());
+				playSpellEffects(EffectPosition.DELAYED, event.getPlayer(), event.getPlayer());
 			}
 		}
 	}

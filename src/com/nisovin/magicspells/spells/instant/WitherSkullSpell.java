@@ -43,8 +43,8 @@ public class WitherSkullSpell extends InstantSpell implements TargetedEntityFrom
 				skull.setCustomNameVisible(true);
 			}
 			MagicSpells.getVolatileCodeHandler().setGravity(skull, this.projectileHasGravity);
-			playSpellEffects(EffectPosition.PROJECTILE, skull);
-			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), skull.getLocation(), player, skull);
+			playSpellEffects(EffectPosition.PROJECTILE, skull, player);
+			playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, player.getLocation(), skull.getLocation(), player, skull, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -59,12 +59,12 @@ public class WitherSkullSpell extends InstantSpell implements TargetedEntityFrom
 		skull.setDirection(v);
 		MagicSpells.getVolatileCodeHandler().setGravity(skull, this.projectileHasGravity);
 		if (caster != null) {
-			playSpellEffects(EffectPosition.CASTER, caster);
+			playSpellEffects(EffectPosition.CASTER, caster, caster);
 		} else {
-			playSpellEffects(EffectPosition.CASTER, from);
+			playSpellEffects(EffectPosition.CASTER, from, caster);
 		}
-		playSpellEffects(EffectPosition.PROJECTILE, skull);
-		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, skull.getLocation(), caster, skull);
+		playSpellEffects(EffectPosition.PROJECTILE, skull, caster);
+		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, skull.getLocation(), caster, skull, caster);
 		
 		return true;
 	}

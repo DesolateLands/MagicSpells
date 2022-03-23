@@ -25,7 +25,7 @@ public class ManaSpell extends InstantSpell {
 			int amount = Math.round(this.mana * power);
 			boolean added = MagicSpells.getManaHandler().addMana(player, amount, ManaChangeReason.OTHER);
 			if (!added) return PostCastAction.ALREADY_HANDLED;
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}	

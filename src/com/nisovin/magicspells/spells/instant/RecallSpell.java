@@ -86,8 +86,8 @@ public class RecallSpell extends InstantSpell implements TargetedEntitySpell {
 			Location from = player.getLocation();
 			boolean teleported = player.teleport(markLocation);
 			if (teleported) {
-				playSpellEffects(EffectPosition.CASTER, from);
-				playSpellEffects(EffectPosition.TARGET, markLocation);
+				playSpellEffects(EffectPosition.CASTER, from, player);
+				playSpellEffects(EffectPosition.TARGET, markLocation, player);
 			} else {
 				// Fail -- teleport prevented
 				MagicSpells.error("Recall teleport blocked for " + player.getName());

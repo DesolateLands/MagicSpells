@@ -68,9 +68,9 @@ public class CombustSpell extends TargetedSpell implements TargetedEntitySpell {
 		EventUtil.call(new SpellApplyDamageEvent(this, player, target, fireTickDamage, DamageCause.FIRE_TICK, ""));
 		target.setFireTicks(duration);
 		if (player != null) {
-			playSpellEffects(player, target);
+			playSpellEffects(player, target, player);
 		} else {
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, player);
 		}
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MagicSpells.plugin, new Runnable() {
 			@Override

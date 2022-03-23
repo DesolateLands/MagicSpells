@@ -129,7 +129,7 @@ public class PainSpell extends TargetedSpell implements TargetedEntitySpell, Spe
 				target.damage(localDamage, player);
 			}
 		}
-		playSpellEffects(player, target);
+		playSpellEffects(player, target, player);
 		return true;
 	}
 

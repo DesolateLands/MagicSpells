@@ -294,9 +294,9 @@ public class MaterializeSpell extends TargetedSpell implements TargetedLocationS
 		}
 
 		if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
-			playSpellEffects(EffectPosition.TARGET, block.getLocation());
-			playSpellEffectsTrail(player.getLocation(), block.getLocation());
+			playSpellEffects(EffectPosition.CASTER, player, player);
+			playSpellEffects(EffectPosition.TARGET, block.getLocation(), player);
+			playSpellEffectsTrail(player.getLocation(), block.getLocation(), player);
 		}
 
 		if (playBreakEffect) block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
@@ -308,8 +308,8 @@ public class MaterializeSpell extends TargetedSpell implements TargetedLocationS
 				public void run() {
 					if (materials.contains(block.getType())) {
 						block.setType(Material.AIR);
-						playSpellEffects(EffectPosition.DELAYED, block.getLocation());
-						playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation());
+						playSpellEffects(EffectPosition.DELAYED, block.getLocation(), player);
+						playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation(), player);
 						if (playBreakEffect) block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
 					}
 				}

@@ -145,22 +145,22 @@ public class DisguiseSpell extends TargetedSpell implements TargetedEntitySpell 
 			}
 			TargetInfo<Player> target = getTargetPlayer(player, power);
 			if (target == null) return noTarget(player);
-			disguise(target.getTarget());
+			disguise(target.getTarget(), player);
 			sendMessages(player, target.getTarget());
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 			return PostCastAction.NO_MESSAGES;
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
 
-	private void disguise(Player player) {
+	private void disguise(Player player, Player caster) {
 		String nameplate = nameplateText;
 		if (showPlayerName) nameplate = player.getDisplayName();
 		PlayerDisguiseData playerDisguiseData = new PlayerDisguiseData((uuid.isEmpty() ? UUID.randomUUID().toString() : uuid), skin, skinSig);
 		Disguise disguise = new Disguise(player, entityData.getType(), nameplate, playerDisguiseData, alwaysShowNameplate, disguiseSelf, ridingBoat, entityData.getFlag(), entityData.getVar1(), entityData.getVar2(), entityData.getVar3(), duration, this);
 		manager.addDisguise(player, disguise);
 		disguised.put(player.getName().toLowerCase(), disguise);
-		playSpellEffects(EffectPosition.TARGET, player);
+		playSpellEffects(EffectPosition.TARGET, player, caster);
 	}
 	
 	public void undisguise(Player player) {
@@ -169,20 +169,20 @@ public class DisguiseSpell extends TargetedSpell implements TargetedEntitySpell 
 		
 		disguise.cancelDuration();
 		sendMessage(strFade, player, MagicSpells.NULL_ARGS);
-		playSpellEffects(EffectPosition.DISABLED, player);
+		playSpellEffects(EffectPosition.DISABLED, player, player);
 	}
 	
 	@Override
 	public boolean castAtEntity(Player player, LivingEntity target, float power) {
 		if (!(target instanceof Player)) return false;
-		disguise((Player)target);
+		disguise((Player)target, player);
 		return true;
 	}
 	
 	@Override
 	public boolean castAtEntity(LivingEntity target, float power) {
 		if (!(target instanceof Player)) return false;
-		disguise((Player)target);
+		disguise((Player)target, null);
 		return true;
 	}
 	

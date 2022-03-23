@@ -74,7 +74,7 @@ public class ShadowstepSpell extends TargetedSpell implements TargetedEntitySpel
 		}
 
 		// Ok
-		playSpellEffects(player.getLocation(), targetLoc);
+		playSpellEffects(player.getLocation(), targetLoc, player);
 		player.teleport(targetLoc);
 
 		return true;

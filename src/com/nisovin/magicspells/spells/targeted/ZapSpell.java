@@ -131,9 +131,9 @@ public class ZapSpell extends TargetedSpell implements TargetedLocationSpell {
 		
 		// Show animation
 		if (playBreakEffect) target.getWorld().playEffect(target.getLocation(), Effect.STEP_SOUND, target.getType());
-		if (!playerNull) playSpellEffects(EffectPosition.CASTER, player);
-		playSpellEffects(EffectPosition.TARGET, target.getLocation());
-		if (!playerNull) playSpellEffectsTrail(player.getLocation(), target.getLocation());
+		if (!playerNull) playSpellEffects(EffectPosition.CASTER, player, player);
+		playSpellEffects(EffectPosition.TARGET, target.getLocation(), player);
+		if (!playerNull) playSpellEffectsTrail(player.getLocation(), target.getLocation(), player);
 		
 		// Remove block
 		target.setType(Material.AIR);

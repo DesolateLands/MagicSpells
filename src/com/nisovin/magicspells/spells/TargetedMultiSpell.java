@@ -194,15 +194,15 @@ public final class TargetedMultiSpell extends TargetedSpell implements TargetedE
 		if (somethingWasDone) {
 			if (player != null) {
 				if (entTarget != null) {
-					playSpellEffects(player, entTarget);
+					playSpellEffects(player, entTarget, player);
 				} else if (locTarget != null) {
-					playSpellEffects(player, locTarget);
+					playSpellEffects(player, locTarget, player);
 				}
 			} else {
 				if (entTarget != null) {
-					playSpellEffects(EffectPosition.TARGET, entTarget);
+					playSpellEffects(EffectPosition.TARGET, entTarget, player);
 				} else if (locTarget != null) {
-					playSpellEffects(EffectPosition.TARGET, locTarget);
+					playSpellEffects(EffectPosition.TARGET, locTarget, player);
 				}
 			}
 		}

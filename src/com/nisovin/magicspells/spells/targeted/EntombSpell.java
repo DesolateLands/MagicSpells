@@ -53,7 +53,7 @@ public class EntombSpell extends TargetedSpell implements TargetedEntitySpell {
 		for (Block block : blocks) {
 			if (block.getType() != tombBlockType.getMaterial()) continue;
 			block.setType(Material.AIR);
-			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation());
+			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation(), null);
 		}
 		
 	}
@@ -67,9 +67,9 @@ public class EntombSpell extends TargetedSpell implements TargetedEntitySpell {
 			LivingEntity target = targetInfo.getTarget();
 			power = targetInfo.getPower();
 			
-			createTomb(target, power);
+			createTomb(target, power, player);
 			sendMessages(player, target);
-			playSpellEffects(player, target);
+			playSpellEffects(player, target, player);
 			
 			return PostCastAction.NO_MESSAGES;
 		}
@@ -80,20 +80,20 @@ public class EntombSpell extends TargetedSpell implements TargetedEntitySpell {
 	@Override
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
 		if (!validTargetList.canTarget(caster, target)) return false;
-		createTomb(target, power);
-		playSpellEffects(caster, target);
+		createTomb(target, power, caster);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 	
 	@Override
 	public boolean castAtEntity(LivingEntity target, float power) {
 		if (!validTargetList.canTarget(target)) return false;
-		createTomb(target, power);
-		playSpellEffects(EffectPosition.TARGET, target);
+		createTomb(target, power, null);
+		playSpellEffects(EffectPosition.TARGET, target, null);
 		return true;
 	}
 	
-	private void createTomb(LivingEntity target, float power) {
+	private void createTomb(LivingEntity target, float power, Player caster) {
 		List<Block> tempBlocks = new ArrayList<>();
 		List<Block> tombBlocks = new ArrayList<>();
 		
@@ -124,22 +124,22 @@ public class EntombSpell extends TargetedSpell implements TargetedEntitySpell {
 			if (b.getType() != Material.AIR) continue;
 			
 			tombBlockType.setBlock(b);
-			playSpellEffects(EffectPosition.SPECIAL, b.getLocation().add(0.5, 0.5, 0.5));
+			playSpellEffects(EffectPosition.SPECIAL, b.getLocation().add(0.5, 0.5, 0.5), caster);
 			tombBlocks.add(b);
 		}
 		
 		blocks.addAll(tombBlocks);
 		
 		if (tombDuration > 0 && !tombBlocks.isEmpty()) {
-			MagicSpells.scheduleDelayedTask(() -> removeTomb(tombBlocks), Math.round(tombDuration * TimeUtil.TICKS_PER_SECOND * power));
+			MagicSpells.scheduleDelayedTask(() -> removeTomb(tombBlocks, caster), Math.round(tombDuration * TimeUtil.TICKS_PER_SECOND * power));
 		}
 	}
 	
-	private void removeTomb(List<Block> entomb) {
+	private void removeTomb(List<Block> entomb, Player caster) {
 		for (Block block : entomb) {
 			if (block.getType() != tombBlockType.getMaterial()) continue;
 			block.setType(Material.AIR);
-			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation());
+			playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, block.getLocation(), caster);
 		}
 		
 		blocks.removeAll(entomb);

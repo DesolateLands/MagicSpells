@@ -142,7 +142,7 @@ public final class MultiSpell extends InstantSpell {
 					action.getSpell().cast(player, power);
 				}
 			}
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		}
 		return Spell.PostCastAction.HANDLE_NORMALLY;
 	}

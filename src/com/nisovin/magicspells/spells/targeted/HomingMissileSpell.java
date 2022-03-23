@@ -207,7 +207,7 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 			this.currentLocation = caster.getLocation();
 			this.currentVelocity = currentLocation.getDirection();
 			init(caster, target, power);
-			playSpellEffects(EffectPosition.CASTER, caster);
+			playSpellEffects(EffectPosition.CASTER, caster, caster);
 		}
 
 		public MissileTracker(Player caster, Location startLocation, LivingEntity target, float power) {
@@ -215,9 +215,9 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 			this.currentVelocity = target.getLocation().toVector().subtract(currentLocation.toVector()).normalize();
 			init(caster, target, power);
 			if (caster != null) {
-				playSpellEffects(EffectPosition.CASTER, caster);
+				playSpellEffects(EffectPosition.CASTER, caster, caster);
 			} else {
-				playSpellEffects(EffectPosition.CASTER, startLocation);
+				playSpellEffects(EffectPosition.CASTER, startLocation, caster);
 			}
 		}
 
@@ -291,7 +291,7 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 
 			// Play effects
 			if (specialEffectInterval > 0 && counter % specialEffectInterval == 0) {
-				playSpellEffects(EffectPosition.SPECIAL, currentLocation);
+				playSpellEffects(EffectPosition.SPECIAL, currentLocation, caster);
 			}
 
 			counter++;
@@ -311,7 +311,7 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 						} else if (spell.isTargetedLocationSpell()) {
 							spell.castAtLocation(caster, target.getLocation(), power);
 						}
-						playSpellEffects(EffectPosition.TARGET, target);
+						playSpellEffects(EffectPosition.TARGET, target, caster);
 						stop();
 					} else {
 						// If it got redirected, redirect it!
@@ -342,7 +342,7 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 				effect.display(data, loc, null, renderDistance, particleHorizontalSpread, particleVerticalSpread, particleHorizontalSpread, particleSpeed, particleCount);
 				//ParticleData data, Location center, Color color, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount
 			} else {
-				playSpellEffects(EffectPosition.SPECIAL, loc);
+				playSpellEffects(EffectPosition.SPECIAL, loc, caster);
 			}
 		}
 
@@ -355,7 +355,7 @@ public class HomingMissileSpell extends TargetedSpell implements TargetedEntityS
 		}
 
 		public void stop() {
-			playSpellEffects(EffectPosition.DELAYED, currentLocation);
+			playSpellEffects(EffectPosition.DELAYED, currentLocation, caster);
 			MagicSpells.cancelTask(taskId);
 			caster = null;
 			target = null;

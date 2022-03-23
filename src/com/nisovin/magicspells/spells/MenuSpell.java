@@ -184,11 +184,11 @@ public class MenuSpell extends TargetedSpell implements TargetedEntitySpell, Tar
 		opener.openInventory(inv);
 		
 		if (entityTarget != null && caster != null) {
-			playSpellEffects(caster, entityTarget);
+			playSpellEffects(caster, entityTarget, caster);
 		} else {
-			if (caster != null) playSpellEffects(EffectPosition.CASTER, caster);
-			playSpellEffects(EffectPosition.SPECIAL, opener);
-			if (locTarget != null) playSpellEffects(EffectPosition.TARGET, locTarget);
+			if (caster != null) playSpellEffects(EffectPosition.CASTER, caster, caster);
+			playSpellEffects(EffectPosition.SPECIAL, opener, caster);
+			if (locTarget != null) playSpellEffects(EffectPosition.TARGET, locTarget, caster);
 		}
 	}
 	

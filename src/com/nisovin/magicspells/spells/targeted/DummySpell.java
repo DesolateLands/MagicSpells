@@ -25,7 +25,7 @@ public class DummySpell extends TargetedSpell implements TargetedEntitySpell, Ta
 		if (state == SpellCastState.NORMAL) {
 			TargetInfo<LivingEntity> target = getTargetedEntity(player, power);
 			if (target == null) return noTarget(player);
-			playSpellEffects(player, target.getTarget());
+			playSpellEffects(player, target.getTarget(), player);
 			sendMessages(player, target.getTarget());
 			return PostCastAction.NO_MESSAGES;
 		}
@@ -34,44 +34,44 @@ public class DummySpell extends TargetedSpell implements TargetedEntitySpell, Ta
 
 	@Override
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 
 	@Override
 	public boolean castAtEntity(LivingEntity target, float power) {
-		playSpellEffects(EffectPosition.TARGET, target);
+		playSpellEffects(EffectPosition.TARGET, target, null);
 		return true;
 	}
 
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
-		playSpellEffects(caster, target);
+		playSpellEffects(caster, target, caster);
 		return true;
 	}
 
 	@Override
 	public boolean castAtLocation(Location target, float power) {
-		playSpellEffects(EffectPosition.TARGET, target);
+		playSpellEffects(EffectPosition.TARGET, target, null);
 		return true;
 	}
 	
 	@Override
 	public boolean castFromConsole(CommandSender sender, String[] args) {
-		playSpellEffects(EffectPosition.CASTER, (Entity)null);
-		playSpellEffects(EffectPosition.TARGET, (Entity)null);
+		playSpellEffects(EffectPosition.CASTER, (Entity)null, (Entity)null);
+		playSpellEffects(EffectPosition.TARGET, (Entity)null, (Entity)null);
 		return true;
 	}
 	
 	@Override
 	public boolean castAtEntityFromLocation(Player caster, Location from, LivingEntity target, float power) {
-		playSpellEffects(from, target);
+		playSpellEffects(from, target, caster);
 		return true;
 	}
 	
 	@Override
 	public boolean castAtEntityFromLocation(Location from, LivingEntity target, float power) {
-		playSpellEffects(from, target);
+		playSpellEffects(from, target, null);
 		return true;
 	}
 	

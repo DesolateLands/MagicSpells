@@ -105,9 +105,9 @@ public class ChainSpell extends TargetedSpell implements TargetedEntitySpell, Ta
 		
 		// Cast spell at targets
 		if (player != null) {
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 		} else if (start != null) {
-			playSpellEffects(EffectPosition.CASTER, start);
+			playSpellEffects(EffectPosition.CASTER, start, player);
 		}
 		if (interval <= 0) {
 			for (int i = 0; i < targets.size(); i++) {
@@ -119,11 +119,11 @@ public class ChainSpell extends TargetedSpell implements TargetedEntitySpell, Ta
 				}
 				castSpellAt(player, from, targets.get(i), targetPowers.get(i));
 				if (i > 0) {
-					playSpellEffectsTrail(targets.get(i - 1).getLocation(), targets.get(i).getLocation());
+					playSpellEffectsTrail(targets.get(i - 1).getLocation(), targets.get(i).getLocation(), player);
 				} else if (i == 0 && player != null) {
-					playSpellEffectsTrail(player.getLocation(), targets.get(i).getLocation());
+					playSpellEffectsTrail(player.getLocation(), targets.get(i).getLocation(), player);
 				}
-				playSpellEffects(EffectPosition.TARGET, targets.get(i));
+				playSpellEffects(EffectPosition.TARGET, targets.get(i), player);
 			}
 		} else {
 			new ChainBouncer(player, start, targets, power);
@@ -188,11 +188,11 @@ public class ChainSpell extends TargetedSpell implements TargetedEntitySpell, Ta
 			}
 			castSpellAt(caster, from, targets.get(current), power);
 			if (current > 0) {
-				playSpellEffectsTrail(targets.get(current - 1).getLocation().add(0, .5, 0), targets.get(current).getLocation().add(0, .5, 0));
+				playSpellEffectsTrail(targets.get(current - 1).getLocation().add(0, .5, 0), targets.get(current).getLocation().add(0, .5, 0), caster);
 			} else if (current == 0 && caster != null) {
-				playSpellEffectsTrail(caster.getLocation().add(0, .5, 0), targets.get(current).getLocation().add(0, .5, 0));
+				playSpellEffectsTrail(caster.getLocation().add(0, .5, 0), targets.get(current).getLocation().add(0, .5, 0), caster);
 			}
-			playSpellEffects(EffectPosition.TARGET, targets.get(current));
+			playSpellEffects(EffectPosition.TARGET, targets.get(current), caster);
 			current++;
 			if (current >= targets.size()) MagicSpells.cancelTask(taskId);
 		}

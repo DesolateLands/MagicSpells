@@ -59,9 +59,9 @@ public class BombSpell extends TargetedSpell implements TargetedLocationSpell {
 		if (block.getType() == Material.AIR || block.getType() == Material.LONG_GRASS || block.getType() == Material.SNOW) {
 			bomb.setBlock(block);
 			if (player != null) {
-				playSpellEffects(player, loc);
+				playSpellEffects(player, loc, player);
 			} else {
-				playSpellEffects(EffectPosition.TARGET, loc);
+				playSpellEffects(EffectPosition.TARGET, loc, player);
 			}
 			new SpellAnimation(interval, interval, true) {
 				
@@ -74,13 +74,13 @@ public class BombSpell extends TargetedSpell implements TargetedLocationSpell {
 						stop();
 						if (bomb.equals(block)) {
 							block.setType(Material.AIR);
-							playSpellEffects(EffectPosition.DELAYED, l);
+							playSpellEffects(EffectPosition.DELAYED, l, player);
 							spell.castAtLocation(player, l, power);
 						}						
 					} else if (!bomb.equals(block)) {
 						stop();
 					} else {
-						playSpellEffects(EffectPosition.SPECIAL, l);
+						playSpellEffects(EffectPosition.SPECIAL, l, player);
 					}
 				}
 				

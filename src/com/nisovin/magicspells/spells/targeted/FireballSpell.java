@@ -142,8 +142,8 @@ public class FireballSpell extends TargetedSpell implements TargetedEntityFromLo
 			MagicSpells.getVolatileCodeHandler().setGravity(fireball, fireballGravity);
 			fireball.setShooter(player);
 			
-			playSpellEffects(EffectPosition.CASTER, player);
-			playSpellEffects(EffectPosition.PROJECTILE, fireball);
+			playSpellEffects(EffectPosition.CASTER, player, player);
+			playSpellEffects(EffectPosition.PROJECTILE, fireball, player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -167,12 +167,12 @@ public class FireballSpell extends TargetedSpell implements TargetedEntityFromLo
 		fireballs.put(fireball, power);
 		
 		if (caster != null) {
-			playSpellEffects(EffectPosition.CASTER, caster);
+			playSpellEffects(EffectPosition.CASTER, caster, caster);
 		} else {
-			playSpellEffects(EffectPosition.CASTER, from);
+			playSpellEffects(EffectPosition.CASTER, from, caster);
 		}
-		playSpellEffects(EffectPosition.PROJECTILE, fireball);
-		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, fireball.getLocation(), caster, fireball);
+		playSpellEffects(EffectPosition.PROJECTILE, fireball, caster);
+		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, from, fireball.getLocation(), caster, fireball, caster);
 		
 		return true;
 	}
@@ -191,7 +191,7 @@ public class FireballSpell extends TargetedSpell implements TargetedEntityFromLo
 		final Fireball fireball = (Fireball)entityRaw;
 		if (!fireballs.containsKey(fireball)) return;
 		
-		playSpellEffects(EffectPosition.TARGET, fireball.getLocation());
+		playSpellEffects(EffectPosition.TARGET, fireball.getLocation(), null);
 		
 		if (noExplosion) {
 			event.setCancelled(true);

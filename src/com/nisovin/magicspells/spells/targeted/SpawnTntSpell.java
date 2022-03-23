@@ -70,8 +70,8 @@ public class SpawnTntSpell extends TargetedSpell implements TargetedLocationSpel
 		if (cancelGravity) {
 			MagicSpells.getVolatileCodeHandler().setGravity(tnt, false);
 		}
-		playSpellEffects(EffectPosition.PROJECTILE, tnt);
-		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, caster.getLocation(), tnt.getLocation(), caster, tnt);
+		playSpellEffects(EffectPosition.PROJECTILE, tnt, caster);
+		playTrackingLinePatterns(EffectPosition.DYNAMIC_CASTER_PROJECTILE_LINE, caster.getLocation(), tnt.getLocation(), caster, tnt, caster);
 		tnt.setFuseTicks(fuse);
 		if (velocity > 0) {
 			tnt.setVelocity(loc.getDirection().normalize().setY(0).multiply(velocity).setY(upVelocity));
@@ -114,7 +114,7 @@ public class SpawnTntSpell extends TargetedSpell implements TargetedLocationSpel
 			
 			// Now play the block destruction effect where blocks were removed
 			for (Block b: event.blockList()) {
-				playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, b.getLocation());
+				playSpellEffects(EffectPosition.BLOCK_DESTRUCTION, b.getLocation(), info.caster);
 			}
 			
 			if (spell != null) {

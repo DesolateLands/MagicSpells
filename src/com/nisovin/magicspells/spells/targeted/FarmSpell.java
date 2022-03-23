@@ -65,8 +65,8 @@ public class FarmSpell extends TargetedSpell implements TargetedLocationSpell {
 			if (block != null) {
 				boolean farmed = farm(block, Math.round(radius * power));
 				if (!farmed) return noTarget(player);
-				playSpellEffects(EffectPosition.CASTER, player);
-				if (targeted) playSpellEffects(EffectPosition.TARGET, block.getLocation());
+				playSpellEffects(EffectPosition.CASTER, player, player);
+				if (targeted) playSpellEffects(EffectPosition.TARGET, block.getLocation(), player);
 			} else {
 				return noTarget(player);
 			}

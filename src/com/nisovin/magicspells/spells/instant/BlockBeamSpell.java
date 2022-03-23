@@ -117,7 +117,7 @@ public class BlockBeamSpell extends InstantSpell {
                     entity.setSmall(true);
                 }
 
-                playSpellEffects(EffectPosition.SPECIAL, position.toLocation(world));
+                playSpellEffects(EffectPosition.SPECIAL, position.toLocation(world), player);
 
                 if (!isTransparent(position.toLocation(world).getBlock())) break;
             }
@@ -135,7 +135,7 @@ public class BlockBeamSpell extends InstantSpell {
                     EventUtil.call(event);
                     if (event.isCancelled()) continue;
                     hitSpell.castAtEntity(player, event.getTarget(), event.getPower());
-                    playSpellEffects(EffectPosition.TARGET, event.getTarget());
+                    playSpellEffects(EffectPosition.TARGET, event.getTarget(), player);
                 }
             }
 
@@ -143,7 +143,7 @@ public class BlockBeamSpell extends InstantSpell {
 
             MagicSpells.scheduleDelayedTask(() -> { listSet.remove(entityList);  entityList.stream().filter(stand -> !stand.isDead()).forEach(Entity::remove); } , removeDelay);
 
-            playSpellEffects(EffectPosition.CASTER, player);
+            playSpellEffects(EffectPosition.CASTER, player, player);
         }
         return PostCastAction.HANDLE_NORMALLY;
 

@@ -95,10 +95,10 @@ public class BlinkSpell extends TargetedSpell implements TargetedLocationSpell {
 					loc.setPitch(player.getLocation().getPitch());
 					loc.setYaw(player.getLocation().getYaw());
 					Location origLoc = player.getLocation();
-					playSpellEffects(EffectPosition.CASTER, origLoc);
+					playSpellEffects(EffectPosition.CASTER, origLoc, player);
 					teleport(player, loc, smokes);
-					playSpellEffects(EffectPosition.TARGET, loc);
-					playSpellEffectsTrail(origLoc, loc);
+					playSpellEffects(EffectPosition.TARGET, loc, player);
+					playSpellEffectsTrail(origLoc, loc, player);
 				} else {
 					return noTarget(player, strCantBlink);
 				}
@@ -110,7 +110,7 @@ public class BlinkSpell extends TargetedSpell implements TargetedLocationSpell {
 	}
 
 	private void teleport(Player player, Location location, HashSet<Location> smokeLocs) {
-		playSpellEffects(player.getLocation(), location);
+		playSpellEffects(player.getLocation(), location, player);
 		player.teleport(location);
 		if (smokeTrail && smokeLocs != null) {
 			for (Location l : smokeLocs) {

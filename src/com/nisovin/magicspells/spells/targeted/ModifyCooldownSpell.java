@@ -75,7 +75,7 @@ public class ModifyCooldownSpell extends TargetedSpell implements TargetedEntity
 	public boolean castAtEntity(Player caster, LivingEntity target, float power) {
 		if (target instanceof Player) {
 			modifyCooldowns((Player)target, power);
-			playSpellEffects(caster, target);
+			playSpellEffects(caster, target, caster);
 			return true;
 		}
 		return false;
@@ -85,7 +85,7 @@ public class ModifyCooldownSpell extends TargetedSpell implements TargetedEntity
 	public boolean castAtEntity(LivingEntity target, float power) {
 		if (target instanceof Player) {
 			modifyCooldowns((Player)target, power);
-			playSpellEffects(EffectPosition.TARGET, target);
+			playSpellEffects(EffectPosition.TARGET, target, null);
 			return true;
 		}
 		return false;

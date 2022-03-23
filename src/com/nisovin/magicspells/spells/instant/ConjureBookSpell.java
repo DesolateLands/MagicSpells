@@ -134,7 +134,7 @@ public class ConjureBookSpell extends InstantSpell implements TargetedLocationSp
 				dropped.setItemStack(item);
 				dropped.setPickupDelay(pickupDelay);
 				MagicSpells.getVolatileCodeHandler().setGravity(dropped, projectileHasGravity);
-				playSpellEffects(EffectPosition.SPECIAL, dropped);
+				playSpellEffects(EffectPosition.SPECIAL, dropped, player);
 				//player.getWorld().dropItem(player.getLocation(), item).setItemStack(item);
 			}
 		}
@@ -153,7 +153,7 @@ public class ConjureBookSpell extends InstantSpell implements TargetedLocationSp
 		dropped.setItemStack(item);
 		dropped.setPickupDelay(pickupDelay);
 		MagicSpells.getVolatileCodeHandler().setGravity(dropped, projectileHasGravity);
-		playSpellEffects(EffectPosition.SPECIAL, dropped);
+		playSpellEffects(EffectPosition.SPECIAL, dropped, null);
 		//target.getWorld().dropItem(target, item).setItemStack(item);
 		return true;
 	}

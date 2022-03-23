@@ -390,9 +390,9 @@ public abstract class BuffSpell extends TargetedSpell implements TargetedEntityS
 				if (ok) {
 					startSpellDuration(target, power);
 					if (caster == null) {
-						playSpellEffects(EffectPosition.TARGET, target);
+						playSpellEffects(EffectPosition.TARGET, target, caster);
 					} else {
-						playSpellEffects(caster, target);
+						playSpellEffects(caster, target, caster);
 					}
 				}
 			}
@@ -403,9 +403,9 @@ public abstract class BuffSpell extends TargetedSpell implements TargetedEntityS
 			if (ok) {
 				startSpellDuration(target, power);
 				if (caster == null) {
-					playSpellEffects(EffectPosition.TARGET, target);
+					playSpellEffects(EffectPosition.TARGET, target, caster);
 				} else {
-					playSpellEffects(caster, target);
+					playSpellEffects(caster, target, caster);
 				}
 			}
 		}
@@ -445,7 +445,7 @@ public abstract class BuffSpell extends TargetedSpell implements TargetedEntityS
 			}, Math.round(dur * TimeUtil.TICKS_PER_SECOND) + 20); // overestimate ticks, since the duration is real-time ms based
 		}
 		
-		playSpellEffectsBuff(player, entity -> thisSpell.isActiveAndNotExpired((Player)entity));
+		playSpellEffectsBuff(player, entity -> thisSpell.isActiveAndNotExpired((Player)entity), player);
 		
 		BuffManager buffman = MagicSpells.getBuffManager();
 		if (buffman != null) buffman.addBuff(player, this);
@@ -557,7 +557,7 @@ public abstract class BuffSpell extends TargetedSpell implements TargetedEntityS
 		BuffManager buffman = MagicSpells.getBuffManager();
 		if (buffman != null) buffman.removeBuff(player, this);
 		sendMessage(this.strFade, player, null);
-		playSpellEffects(EffectPosition.DISABLED, player);
+		playSpellEffects(EffectPosition.DISABLED, player, player);
 		turnOffBuff(player);
 		cancelEffects(EffectPosition.CASTER, player.getUniqueId().toString());
 	}

@@ -57,7 +57,7 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 			
 			// Check if failed
 			if (!grown) return noTarget(player);
-			playSpellEffects(player, target.getLocation());
+			playSpellEffects(player, target.getLocation(), player);
 		}
 		return PostCastAction.HANDLE_NORMALLY;
 	}
@@ -84,7 +84,7 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 	@Override
 	public boolean castAtLocation(Player caster, Location target, float power) {
 		boolean ret = growTree(target.getBlock());
-		if (ret) playSpellEffects(caster, target);
+		if (ret) playSpellEffects(caster, target, caster);
 		return ret;
 	}
 

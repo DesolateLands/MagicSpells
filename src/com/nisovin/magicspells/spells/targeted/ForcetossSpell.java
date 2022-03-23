@@ -75,7 +75,7 @@ public class ForcetossSpell extends TargetedSpell implements TargetedEntitySpell
 		v.setY(0).normalize().multiply(hForce * power).setY(vForce * power);
 		if (rotation != 0) Util.rotateVector(v, rotation);
 		target.setVelocity(v);
-		playSpellEffects(player, target);
+		playSpellEffects(player, target, player);
 	}
 
 	@Override

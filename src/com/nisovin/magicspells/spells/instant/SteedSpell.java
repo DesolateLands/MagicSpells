@@ -114,7 +114,7 @@ public class SteedSpell extends InstantSpell {
 				if (this.armor != null) ((Horse)entity).getInventory().setArmor(this.armor);
 			}
 			entity.setPassenger(player);
-			playSpellEffects(EffectPosition.CASTER, player);
+			playSpellEffects(EffectPosition.CASTER, player, player);
 			this.mounted.put(player.getName(), entity.getEntityId());
 		}
 		return PostCastAction.HANDLE_NORMALLY;
@@ -132,7 +132,7 @@ public class SteedSpell extends InstantSpell {
 		if (!this.mounted.containsKey(player.getName())) return;
 		this.mounted.remove(player.getName());
 		event.getDismounted().remove();
-		playSpellEffects(EffectPosition.DISABLED, player);
+		playSpellEffects(EffectPosition.DISABLED, player, player);
 	}
 	
 	@EventHandler
