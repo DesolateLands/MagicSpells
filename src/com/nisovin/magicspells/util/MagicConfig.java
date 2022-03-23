@@ -156,45 +156,15 @@ public class MagicConfig {
 			
 			// Load spell configs
 			for (File spellConfigFile : folder.listFiles(FILENAME_FILTER)) {
-				YamlConfiguration spellConfig = new YamlConfiguration();
-				try {
-					spellConfig.load(spellConfigFile);
-					Set<String> keys = spellConfig.getKeys(false);
-					
-					// TODO this should be refactored to allow registration of additional "special sections"
-					for (String key : keys) {
-						if (key.equals("predefined-items")) {
-							ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.predefined-items");
-							if (sec == null) sec = this.mainConfig.createSection("general.predefined-items");
-							for (String itemKey : spellConfig.getConfigurationSection("predefined-items").getKeys(false)) {
-								sec.set(itemKey, spellConfig.get("predefined-items." + itemKey));
-							}
-						} else if (key.equals("variables")) {
-							ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.variables");
-							if (sec == null) sec = this.mainConfig.createSection("general.variables");
-							for (String itemKey : spellConfig.getConfigurationSection("variables").getKeys(false)) {
-								sec.set(itemKey, spellConfig.get("variables." + itemKey));
-							}
-						} else if (key.equals("modifiers")) {
-							ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.modifiers");
-							if (sec == null) sec = this.mainConfig.createSection("general.modifiers");
-							for (String modifierKey : spellConfig.getConfigurationSection("modifiers").getKeys(false)) {
-								sec.set(modifierKey, spellConfig.get("modifiers." + modifierKey));
-							}
-						} else if (key.equals("effect-collections")) {
-							ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.effect-collections");
-							if (sec == null) sec = this.mainConfig.createSection("general.effect-collections");
-							for (String effectKey : spellConfig.getConfigurationSection("effect-collections").getKeys(false)) {
-								sec.set(effectKey, spellConfig.get("effect-collections." + effectKey));
-							}
-						} else {
-							this.mainConfig.set("spells." + key, spellConfig.get(key));
-						}
-					}
-				} catch (Exception e) {
-					MagicSpells.error("Error loading config file " + spellConfigFile.getName());
-					MagicSpells.handleException(e);
+				if (!spellConfigFile.isDirectory()) {
+					loadSpellConfigFromFile(spellConfigFile);
 				}
+			}
+
+			// Load spell configs from config directory
+			File spellsFolder = new File(folder, "spells");
+			if (spellsFolder.exists() && spellsFolder.isDirectory()) {
+				loadSpellsFromFolder(spellsFolder);
 			}
 			
 			// Load mini configs
@@ -204,7 +174,60 @@ public class MagicConfig {
 			MagicSpells.handleException(ex);
 		}
 	}
-	
+
+	private void loadSpellsFromFolder(File folder) {
+		File[] files = folder.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				loadSpellsFromFolder(file);
+			} else if (file.getName().endsWith(".yml")) {
+				loadSpellConfigFromFile(file);
+			}
+		}
+	}
+
+	private void loadSpellConfigFromFile(File spellConfigFile) {
+		YamlConfiguration spellConfig = new YamlConfiguration();
+		try {
+			spellConfig.load(spellConfigFile);
+			Set<String> keys = spellConfig.getKeys(false);
+
+			// TODO this should be refactored to allow registration of additional "special sections"
+			for (String key : keys) {
+				if (key.equals("predefined-items")) {
+					ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.predefined-items");
+					if (sec == null) sec = this.mainConfig.createSection("general.predefined-items");
+					for (String itemKey : spellConfig.getConfigurationSection("predefined-items").getKeys(false)) {
+						sec.set(itemKey, spellConfig.get("predefined-items." + itemKey));
+					}
+				} else if (key.equals("variables")) {
+					ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.variables");
+					if (sec == null) sec = this.mainConfig.createSection("general.variables");
+					for (String itemKey : spellConfig.getConfigurationSection("variables").getKeys(false)) {
+						sec.set(itemKey, spellConfig.get("variables." + itemKey));
+					}
+				} else if (key.equals("modifiers")) {
+					ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.modifiers");
+					if (sec == null) sec = this.mainConfig.createSection("general.modifiers");
+					for (String modifierKey : spellConfig.getConfigurationSection("modifiers").getKeys(false)) {
+						sec.set(modifierKey, spellConfig.get("modifiers." + modifierKey));
+					}
+				} else if (key.equals("effect-collections")) {
+					ConfigurationSection sec = this.mainConfig.getConfigurationSection("general.effect-collections");
+					if (sec == null) sec = this.mainConfig.createSection("general.effect-collections");
+					for (String effectKey : spellConfig.getConfigurationSection("effect-collections").getKeys(false)) {
+						sec.set(effectKey, spellConfig.get("effect-collections." + effectKey));
+					}
+				} else {
+					this.mainConfig.set("spells." + key, spellConfig.get(key));
+				}
+			}
+		} catch (Exception e) {
+			MagicSpells.error("Error loading config file " + spellConfigFile.getName());
+			MagicSpells.handleException(e);
+		}
+	}
+
 	private void loadSpellConfigs(File folder) {
 		YamlConfiguration conf;
 		String name;
