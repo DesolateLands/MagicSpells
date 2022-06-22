@@ -399,6 +399,13 @@ public class Spellbook {
 		}
 		return new ArrayList<>();
 	}
+
+	public Set<CastItem> getAllCustomBindings(Spell spell) {
+		if (spell != null && customBindings.containsKey(spell)) {
+			return customBindings.get(spell);
+		}
+		return new HashSet<>();
+	}
 	
 	public boolean hasSpell(Spell spell) {
 		return hasSpell(spell, true);
