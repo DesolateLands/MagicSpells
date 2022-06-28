@@ -230,6 +230,7 @@ def magicspellsClasspathBase() {
     .plus(project.files("${-> project.ext.magicspellsData.libDir}${File.separator}LibsDisguises-9.0.9.jar"))
     .plus(project.files("${-> project.ext.magicspellsData.libDir}${File.separator}Residence.jar"))
     .plus(project.files("${-> project.ext.magicspellsData.libDir}${File.separator}PlaceholderAPI.jar"))
+    .plus(project.files("${-> project.ext.magicspellsData.libDir}${File.separator}DesolateCore.jar"))
     .plus(magicspellsClasspathVault())
 	.plus(project.files("${-> project.ext.magicspellsData.libDir}${File.separator}GriefPrevention.jar"))
 }

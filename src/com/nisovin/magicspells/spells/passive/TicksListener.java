@@ -22,6 +22,7 @@ import com.nisovin.magicspells.events.SpellForgetEvent;
 import com.nisovin.magicspells.events.SpellLearnEvent;
 import com.nisovin.magicspells.spells.PassiveSpell;
 import com.nisovin.magicspells.util.OverridePriority;
+import com.desolatelands.desolateplugin.event.ProfileSwitchedEvent;
 
 // Trigger argument is required
 // Must be an integer.
@@ -59,6 +60,15 @@ public class TicksListener extends PassiveListener {
 			ticker.turnOff();
 		}
 		tickers.clear();
+	}
+
+	@EventHandler
+	public void onProfileSwitched(ProfileSwitchedEvent event) {
+		Player player = event.getPlayer();
+		for (Ticker ticker : tickers.values()) {
+			ticker.remove(player);
+			ticker.add(player);
+		}
 	}
 	
 	@OverridePriority

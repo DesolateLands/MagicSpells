@@ -1,3 +1,5 @@
+# Desolate MagicSpells Fork
+Note: This is a fork by PrankCalls for the Desolate Lands RPG Minecraft Server. It requires the DesolateCore plugin due to a change to the listeners for the ticks passive.
 # MagicSpells
 Build status: [![Build Status](https://travis-ci.org/TheComputerGeek2/MagicSpells.svg?branch=master)](https://travis-ci.org/TheComputerGeek2/MagicSpells)
 Downloads: [![Github Releases](https://img.shields.io/github/downloads/TheComputerGeek2/MagicSpells/total.svg)](https://github.com/TheComputerGeek2/MagicSpells/releases)

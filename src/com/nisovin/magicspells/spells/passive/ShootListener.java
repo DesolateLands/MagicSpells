@@ -2,6 +2,8 @@ package com.nisovin.magicspells.spells.passive;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +17,30 @@ import com.nisovin.magicspells.util.OverridePriority;
 // No trigger variable is used here
 public class ShootListener extends PassiveListener {
 
-	List<PassiveSpell> spells = new ArrayList<>();
+	Map<PassiveSpell, ShootForce> spells = new HashMap<>();
 
 	@Override
 	public void registerSpell(PassiveSpell spell, PassiveTrigger trigger, String var) {
-		spells.add(spell);
+		ShootForce shootForce = new ShootForce();
+		if (var != null && !var.isEmpty()) {
+			String[] split = var.split("-");
+
+			if (split.length == 2) {
+				try {
+					shootForce.min = Float.parseFloat(split[0]);
+					shootForce.max = Float.parseFloat(split[1]);
+				} catch (NumberFormatException ex) {
+					throw new IllegalArgumentException("The var " + var + " is not a valid force range for shoot passives!");
+				}
+			} else {
+				try {
+					shootForce.max = Float.parseFloat(var);
+				} catch (NumberFormatException ex) {
+					throw new IllegalArgumentException("The var " + var + " is not a valid force range for shoot passives!");
+				}
+			}
+		}
+		this.spells.put(spell, shootForce);
 	}
 	
 	@OverridePriority
@@ -29,13 +50,23 @@ public class ShootListener extends PassiveListener {
 		if (!(event.getEntity() instanceof Player)) return;
 		Player player = (Player)event.getEntity();
 		Spellbook spellbook = MagicSpells.getSpellbook(player);
-		for (PassiveSpell spell : spells) {
+		for (PassiveSpell spell : spells.keySet()) {
 			if (!isCancelStateOk(spell, event.isCancelled())) continue;
 			if (!spellbook.hasSpell(spell)) continue;
+			if (!spells.get(spell).matches(event.getForce())) continue;
 			boolean casted = spell.activate(player, event.getForce());
 			if (!PassiveListener.cancelDefaultAction(spell, casted)) continue;
 			event.setCancelled(true);
 			event.getProjectile().remove();
+		}
+	}
+
+	class ShootForce {
+		float min = 0f;
+		float max = 1.01f;
+
+		boolean matches(float force) {
+			return force >= min && force < max;
 		}
 	}
 	
