@@ -79,7 +79,8 @@ public class VariableManager implements Listener {
 				}
 				String bossBar = section.getString(var + ".boss-bar", null);
 				boolean expBar = section.getBoolean(var + ".exp-bar", false);
-				variable.init(def, min, max, perm, objective, bossBar, expBar);
+				boolean profileSpecific = section.getBoolean(var + ".profile-specific", false);
+				variable.init(def, min, max, perm, objective, bossBar, expBar, profileSpecific);
 				variable.loadExtraData(varSection);
 				this.variables.put(var, variable);
 				MagicSpells.debug(2, "Loaded variable " + var);
@@ -404,6 +405,34 @@ public class VariableManager implements Listener {
 			if (var.expBar) {
 				MagicSpells.getVolatileCodeHandler().setExperienceBar(player, (int)var.getValue(player), (float)(var.getValue(player) / var.maxValue));
 				break;
+			}
+		}
+	}
+
+	public Map<String, Double> getProfileVariables(Player player) {
+		Map<String, Double> profileVars = new HashMap<>();
+
+		for (String varName : variables.keySet()) {
+			Variable var = variables.get(varName);
+
+			if (var.isProfileSpecific() && var instanceof PlayerVariable) {
+				double value = var.getValue(player.getName());
+				if (value != var.defaultValue) {
+					profileVars.put(varName, value);
+				}
+			}
+		}
+		return profileVars;
+	}
+
+	public void resetProfileVariables(Player player) {
+		for (String varName : variables.keySet()) {
+			Variable var = variables.get(varName);
+
+			if (var.isProfileSpecific()) {
+				var.reset(player);
+				updateExpBar(var, player.getName());
+				this.dirtyPlayerVars.add(player.getName());
 			}
 		}
 	}

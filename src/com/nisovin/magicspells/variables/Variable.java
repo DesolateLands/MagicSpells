@@ -14,12 +14,13 @@ public abstract class Variable {
 	protected Objective objective;
 	protected String bossBar;
 	protected boolean expBar;
+	protected boolean profileSpecific;
 	
 	public Variable() {
 		// No op
 	}
 	
-	public final void init(double defaultValue, double minValue, double maxValue, boolean permanent, Objective objective, String bossBar, boolean expBar) {
+	public final void init(double defaultValue, double minValue, double maxValue, boolean permanent, Objective objective, String bossBar, boolean expBar, boolean profileSpecific) {
 		this.defaultValue = defaultValue;
 		this.defaultStringValue = defaultValue + "";
 		this.minValue = minValue;
@@ -28,6 +29,7 @@ public abstract class Variable {
 		this.objective = objective;
 		this.bossBar = bossBar;
 		this.expBar = expBar;
+		this.profileSpecific = profileSpecific;
 		init();
 	}
 	
@@ -79,5 +81,7 @@ public abstract class Variable {
 	public String getStringValue(String player) {
 		return getValue(player) + "";
 	}
+
+	public boolean isProfileSpecific() { return profileSpecific; }
 	
 }

@@ -2302,6 +2302,8 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	Map<String, Long> getCooldowns() {
 		return this.nextCast;
 	}
+
+	public List<String> getReplaces() { return this.replaces; }
 	
 	public Map<String, VariableMod> getVariableModsCast() {
 		return this.variableModsCast;

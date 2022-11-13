@@ -32,6 +32,7 @@ public class PassiveTrigger {
 	public static Set<PassiveTrigger> RESPAWN = addTriggers("respawn", RespawnListener.class);
 	public static Set<PassiveTrigger> JOIN = addTriggers("join", JoinListener.class);
 	public static Set<PassiveTrigger> QUIT = addTriggers("quit", QuitListener.class);
+	public static Set<PassiveTrigger> PROFILE_SWITCHED = addTriggers("profileswitched", ProfileSwitchedListener.class);
 	public static Set<PassiveTrigger> BLOCK_BREAK = addTriggers("blockbreak", BlockBreakListener.class);
 	public static Set<PassiveTrigger> BLOCK_PLACE = addTriggers("blockplace", BlockPlaceListener.class);
 	public static Set<PassiveTrigger> RIGHT_CLICK = addTriggers("rightclick", RightClickItemListener.class);
