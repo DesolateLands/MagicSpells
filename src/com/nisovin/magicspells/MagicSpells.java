@@ -510,6 +510,7 @@ public class MagicSpells extends JavaPlugin {
 			}
 			spell.initialize();
 		}
+		effectCollectionManager.loadModifiers();
 		log("...done");
 		
 		// Load online player spellbooks

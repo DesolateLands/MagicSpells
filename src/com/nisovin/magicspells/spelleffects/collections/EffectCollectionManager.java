@@ -27,4 +27,10 @@ public class EffectCollectionManager {
         return null;
     }
 
+    public void loadModifiers() {
+        for (EffectCollection collection : collections.values()) {
+            collection.loadModifiers();
+        }
+    }
+
 }

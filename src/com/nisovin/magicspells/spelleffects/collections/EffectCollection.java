@@ -14,6 +14,7 @@ import com.nisovin.magicspells.castmodifiers.ModifierSet;
 
 public class EffectCollection {
 
+    private List<String> modifiersList;
     private ModifierSet modifiers = null;
     private EnumMap<EffectPosition, List<SpellEffect>> effects = new EnumMap<>(EffectPosition.class);
     private List<EffectCollection> effectCollections;
@@ -41,8 +42,17 @@ public class EffectCollection {
             }
         }
 
-        List<String> list = section.getStringList("modifiers");
-        if (list != null) modifiers = new ModifierSet(list);
+        modifiersList = section.getStringList("modifiers");
+    }
+
+    public void loadModifiers() {
+        if (modifiersList != null) {
+            modifiers = new ModifierSet(modifiersList);
+            modifiersList = null;
+        }
+        for (EffectCollection collection : effectCollections) {
+            collection.loadModifiers();
+        }
     }
 
     public List<SpellEffect> getEffects(EffectPosition pos, Entity entity) {
