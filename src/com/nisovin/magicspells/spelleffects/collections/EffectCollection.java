@@ -50,8 +50,10 @@ public class EffectCollection {
             modifiers = new ModifierSet(modifiersList);
             modifiersList = null;
         }
-        for (EffectCollection collection : effectCollections) {
-            collection.loadModifiers();
+        if (effectCollections != null) {
+            for (EffectCollection collection : effectCollections) {
+                collection.loadModifiers();
+            }
         }
     }
 
